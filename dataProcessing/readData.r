@@ -14,7 +14,8 @@ rawCsv <- readr::read_csv('/ESS_Datasets/USERS/Duveiller/Workspace/SOIL_LUCAS/Fi
 
 subDat <- rawCsv %>% 
   rename(SNR_vct=`SNR_filter[, 22]`, ALB_vct=AlbedoMean, NPP_vct=PsnNet) %>%
-  filter(sample_ID.x==10745, !is.na(ALB_vct)) 
+  filter(sample_ID.x==10745,!is.na(ALB_vct)) 
+
 
 # 10745
 # 11388
@@ -29,10 +30,11 @@ ggplot(filter(dat,idpt==242))+
   geom_point(aes(x=time,y=NPP))
   
 
-ggplot(filter(dat,NPP!=0,ALB!=0,SNR>15)) + 
+ggplot(filter(dat,NPP!=0,ALB!=0,SNR>30)) + 
   geom_point(aes(x=NPP,y=ALB,fill=as.integer(time)), shape=21, colour='grey30',size=3)+
   geom_smooth(aes(x=NPP,y=ALB),method = 'gam', formula = y ~ s(x, bs = "cs"))+
   scale_fill_gradientn('Time',colours=pal, labels=as.Date_origin)+
   theme(legend.position = c(0.8,0.2))
   
+
 
