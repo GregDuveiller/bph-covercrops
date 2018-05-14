@@ -18,7 +18,7 @@ rawCsv <- readr::read_csv('/DATA/scratch/SOIL_LUCAS/FileGregAll.csv')
 
 subDat <- rawCsv %>% 
   rename(SNR_vct=`SNR_filter[, 22]`, ALB_vct=AlbedoMean, NPP_vct=PsnNet) %>%
-  filter(sample_ID.x==10745) 
+  filter(sample_ID.x==11388) 
 
 subDat$ALB_vct[is.na(subDat$ALB_vct)] <- paste(rep('NA',ws^2),collapse=',')
 # 10745
@@ -58,7 +58,7 @@ ggplot(filter(dat,time=='2009-04-23'))+
 
 
 
-ggplot(filter(dat,NPP!=0,ALB!=0,SNR>15)) + 
+ggplot(filter(dat,NPP!=0,ALB!=0,SNR>10)) + 
   geom_point(aes(x=NPP,y=ALB,fill=as.integer(time)), shape=21, colour='grey30',size=3)+
   geom_smooth(aes(x=NPP,y=ALB),method = 'gam', formula = y ~ s(x, bs = "cs"))+
   scale_fill_gradientn('Time',colours=pal, labels=as.Date_origin)+
