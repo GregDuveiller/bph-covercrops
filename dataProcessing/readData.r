@@ -15,7 +15,7 @@ as.Date_origin <- function(x){
 dpath <- '/DATA/scratch/SOIL_LUCAS/'
 
 # read full file
-rawCsv <- readr::read_csv(paste0(dpath,'FileGregAllFlags.csv'))
+rawCsv <- readr::read_csv(paste0(dpath,'FileGregAllFlagsNDVI.csv'))
 
 
 # set window size
