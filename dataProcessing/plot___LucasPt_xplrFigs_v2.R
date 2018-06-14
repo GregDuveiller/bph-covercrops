@@ -1,11 +1,11 @@
-plotFigs4LucasPt <- function(Lpt=Lpt,fpath=fpath,rawCsv=rawCsv,minSNR=minSNR,minDist=minDist){
+plotFigs4LucasPt <- function(Lpt=Lpt,fpath=fpath,rawCsv=rawCsv,minSNR=minSNR,minDist=minDist,ndays=ndays){
   
   require(tidyverse)
   require(scales)
   require(grid)
   require(RColorBrewer)
   require(sf)
-
+  
   
   pal <- rev(brewer.pal(9,'YlGn'))
   as.Date_origin <- function(x){
@@ -50,6 +50,7 @@ plotFigs4LucasPt <- function(Lpt=Lpt,fpath=fpath,rawCsv=rawCsv,minSNR=minSNR,min
            NDV_qlty_vct=BRDF_Albedo_Band_Mandatory_Quality_Band1,
            ALB_vct=AlbedoMean, 
            ALB_qlty_vct=BRDF_Albedo_Band_Mandatory_Quality_shortwave,
+           SNW_vct=Snow_BRDF_Albedo,
            NPP_vct=PsnNet,NPP_qlty_vct=Psn_QC) %>%
     filter(POINT_ID.x==Lpt) 
   
@@ -58,6 +59,8 @@ plotFigs4LucasPt <- function(Lpt=Lpt,fpath=fpath,rawCsv=rawCsv,minSNR=minSNR,min
   
   subDat$ALB_vct[is.na(subDat$ALB_vct)] <- paste(rep('NA',ws^2),collapse=',')
   subDat$ALB_qlty_vct[is.na(subDat$ALB_qlty_vct)] <- paste(rep('NA',ws^2),collapse=',')
+  
+  subDat$SNW_vct[is.na(subDat$SNW_vct)] <- paste(rep('NA',ws^2),collapse=',')
   
   # prepare dataframe to host exploded values from the window
   dat <- data.frame(idpt=rep(1:ws^2,times=dim(subDat)[1]),
@@ -71,6 +74,7 @@ plotFigs4LucasPt <- function(Lpt=Lpt,fpath=fpath,rawCsv=rawCsv,minSNR=minSNR,min
   dat$NPP_qlty=as.integer(as.vector(unlist(strsplit(subDat$NPP_qlty_vct, ","))))
   dat$ALB_qlty=as.integer(as.vector(unlist(strsplit(subDat$ALB_qlty_vct, ","))))
   dat$NDV_qlty=as.integer(as.vector(unlist(strsplit(subDat$NDV_qlty_vct, ","))))
+  dat$SNW=as.integer(as.vector(unlist(strsplit(subDat$SNW_vct, ","))))
   
   # calculate distances within the window
   dd <- data.frame(idpt=1:ws^2,row=rep(1:ws,each=ws),col=rep(1:ws,times=ws))
@@ -106,27 +110,35 @@ plotFigs4LucasPt <- function(Lpt=Lpt,fpath=fpath,rawCsv=rawCsv,minSNR=minSNR,min
   
   
   # base filter
-  datf0 <- filter(dat,SNR>minSNR,ALB>0,ALB<0.3,dist<minDist)
+  datf0 <- filter(dat,SNR>minSNR,SNW==0,ALB>0,dist<minDist)
   if(dim(datf0)[1]==0){print(paste('No data left to plot for point', Lpt)); return()}
   
-  
+  # get all times 
+  timeVct <- unique(datf0$time)
+  # max time limits
+  TIME_lims <- c(min(timeVct),max(timeVct))
   # get maxtime
-  dum <-datf0 %>% group_by(time) %>% summarise(meanNDV=mean(NDV,na.rm=T))
-  timeMax <- dum$time[which(dum$meanNDV==max(dum$meanNDV))]
+  dum1 <-datf0 %>% group_by(time) %>% summarise(meanNDV=mean(NDV,na.rm=T))
+  timeMax <- dum1$time[which(dum1$meanNDV==max(dum1$meanNDV))]
+  # get mintime
+  dum2 <- filter(dum1,time<=timeMax,time>timeMax-ndays)
+  timeMin <- dum2$time[which(dum2$meanNDV==min(dum2$meanNDV))]
+
   
   # plot time series for central pixel (including its flags)
   datT0 <- gather(datf0,variable,value,ALB,NDV,NPP)
-  datT <- filter(dat,idpt==221,ALB>0,ALB<0.3) %>%  gather(variable,value,ALB,NDV,NPP)# Get central pixel
-  
+  datT <- filter(dat,idpt==221,SNW==0) %>%  gather(variable,value,ALB,NDV,NPP)# Get central pixel
   
   g.tsx <- ggplot(datT0)+
+    geom_vline(xintercept=timeMin,colour='grey60')+
+    geom_vline(xintercept=timeMax,colour='grey60')+
     geom_line(aes(x=time,y=value,group=idpt),alpha=0.2,colour='cornflowerblue')+
-    geom_point(data=datT,aes(x=time,y=value,fill=as.integer(time)), shape=21, colour='grey30',size=3)+
+      geom_point(data=datT,aes(x=time,y=value,fill=as.integer(time)), shape=21, colour='grey30',size=3)+
     geom_point(data=filter(datT,!ALB_qlty==0),aes(x=time,y=value), shape=3, colour='red',size=4)+  # +
     geom_point(data=filter(datT,!NDV_qlty==0),aes(x=time,y=value), shape=4, colour='red',size=4)+ # x
     geom_point(data=filter(datT,!NPP_qlty %in% NPP_ok_flags),aes(x=time,y=value),  shape=5, colour='red',size=4)+
     facet_wrap(~variable,nc=1,scales="free") + 
-    scale_fill_gradientn('',colours=pal, labels=as.Date_origin)+
+    scale_fill_gradientn('',colours=pal, labels=as.Date_origin, limits=TIME_lims)+
     scale_y_continuous('')+
     theme(legend.position = 'bottom', legend.key.width = unit(1,'in'))
   
@@ -135,32 +147,27 @@ plotFigs4LucasPt <- function(Lpt=Lpt,fpath=fpath,rawCsv=rawCsv,minSNR=minSNR,min
   # dat.filter.all <- filter(datf0,ALB_qlty==0,NDV_qlty==0)
   
   
-  g.ALBvsNDVI <- ggplot(datf0,aes(x=NDV,y=ALB)) + 
+  g.ALBvsNDVI <- ggplot(filter(datf0,time<=timeMax,time>timeMin),aes(x=NDV,y=ALB)) + 
     geom_point(aes(x=NDV,y=ALB,fill=as.integer(time)), shape=21, colour='grey40',size=2)+
-    geom_smooth(data=filter(datf0,time<=timeMax),
-                method = 'gam', formula = y ~ s(x, bs = "cs"),colour=pal[2],fullrange=T)+
-    geom_smooth(data=filter(datf0,time>=timeMax),
-                method = 'gam', formula = y ~ s(x, bs = "cs"),colour=pal[8],fullrange=T)+
-    geom_point(data=filter(datf0,dist==0),aes(fill=as.integer(time)), shape=21, colour='grey20',size=5)+
-    # geom_smooth(aes(x=NDV,y=ALB),method = 'gam', formula = y ~ s(x, bs = "cs"))+
-    scale_fill_gradientn('Time',colours=pal, labels=as.Date_origin)+
-    coord_cartesian(ylim=ALB_lims)+
+    geom_smooth(method = 'lm', colour=pal[2],fullrange=T)+
+    geom_point(data=filter(datf0,dist==0,time<=timeMax,time>timeMax-ndays),
+               aes(fill=as.integer(time)), shape=21, colour='grey20',size=5)+
+    scale_fill_gradientn('Time',colours=pal, labels=as.Date_origin, limits=TIME_lims)+
+   # coord_cartesian(ylim=ALB_lims)+
     theme(legend.position = 'none') #c(0.8,0.2)
   
   
-  g.ALBvsNPP <- ggplot(datf0,aes(x=NPP,y=ALB)) + 
+  g.ALBvsNPP <- ggplot(filter(datf0,time<=timeMax,time>timeMin),aes(x=NPP,y=ALB)) + 
     geom_point(aes(fill=as.integer(time)), shape=21, colour='grey40',size=2)+
-    geom_smooth(data=filter(datf0,time<=timeMax),
-                method = 'gam', formula = y ~ s(x, bs = "cs"),colour=pal[2],fullrange=T)+
-    geom_smooth(data=filter(datf0,time>=timeMax),
-                method = 'gam', formula = y ~ s(x, bs = "cs"),colour=pal[8],fullrange=T)+
-    geom_point(data=filter(datf0,dist==0),aes(fill=as.integer(time)), shape=21, colour='grey20',size=5)+
-    # geom_smooth(aes(x=NDV,y=ALB),method = 'gam', formula = y ~ s(x, bs = "cs"))+
-    scale_fill_gradientn('Time',colours=pal, labels=as.Date_origin)+
-    coord_cartesian(ylim=ALB_lims)+
+#    geom_smooth(method = 'gam', formula = y ~ s(x, bs = "cs"),colour=pal[2],fullrange=T)+
+    geom_smooth(method = 'lm', colour=pal[2],fullrange=T)+
+    geom_point(data=filter(datf0,dist==0,time<=timeMax,time>timeMax-ndays),
+               aes(fill=as.integer(time)), shape=21, colour='grey20',size=5)+
+    scale_fill_gradientn('Time',colours=pal, labels=as.Date_origin, limits=TIME_lims)+
+   # coord_cartesian(ylim=ALB_lims)+
     theme(legend.position = 'none') #c(0.8,0.2)
   
-
+  
   
   # prepare output
   figW <- 16; figH <- 9
@@ -176,6 +183,6 @@ plotFigs4LucasPt <- function(Lpt=Lpt,fpath=fpath,rawCsv=rawCsv,minSNR=minSNR,min
   
   
   
-
+  
   
 }
