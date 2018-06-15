@@ -18,7 +18,7 @@ ptsAll <- sf::st_read(paste0(dpath,'LUCAS_ARABLE.shp'), quiet = TRUE)
 # prepare map 
 world <- sf::st_read(paste0(vpath,'ne_50m_land.shp'), quiet = TRUE)
 laes_prj <- "+proj=laea +lat_0=52 +lon_0=10 +x_0=4321000 +y_0=3210000 +ellps=GRS80 +units=m +no_defs"
-europe_laea <- sf::st_intersection(world,st_set_crs(st_as_sf(as(raster::extent(-10, 55, 26, 72), "SpatialPolygons")), st_crs(nc)))%>%
+europe_laea <- sf::st_intersection(world,st_set_crs(st_as_sf(as(raster::extent(-10, 55, 26, 72), "SpatialPolygons")), st_crs(world)))%>%
   st_transform(laes_prj)
 
 
