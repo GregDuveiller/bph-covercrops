@@ -18,22 +18,35 @@ ptsAll <- sf::st_read('dataInput/LUCAS_ARABLE.shp', quiet = TRUE)
 # read min-max LANDSAT NDVI
 ptsNDVImin <- readr::read_csv(paste0(dpath,'LUCAS_Landsat_NDVI_MIN.csv'))
 ptsNDVImax <- readr::read_csv(paste0(dpath,'LUCAS_Landsat_NDVI_MAX.csv'))
+ptsNDVImin_std <- readr::read_csv(paste0(dpath,'LUCAS_Landsat_NDVI_MIN_STD.csv'))
+ptsNDVImax_std <- readr::read_csv(paste0(dpath,'LUCAS_Landsat_NDVI_MAX_STD.csv'))
+
 
 # some harmonization is required
-ptsNDVImin <- ptsNDVImin %>%
-  mutate(ref_year = date + 1) # as year reported is year of start of season
+ptsNDVImin <- ptsNDVImin %>% 
+  left_join(ptsNDVImin_std %>%
+              rename(NDVI_std = NDVI) %>%
+              select(NDVI_std, sample_ID, date), by = c('sample_ID', 'date')) %>%
+  mutate(ref_year = date + 1) %>% # as year reported is year of start of season
+  select(-date)
+
 ptsNDVImax <- ptsNDVImax %>%
+  left_join(ptsNDVImax_std %>%
+              rename(NDVI_std = NDVI) %>%
+              select(NDVI_std, sample_ID, date), by = c('sample_ID', 'date')) %>%
   rename(ref_year = date) %>% # as year reported is year of main growing season
-  mutate(DOI365 = round(DOY + 365))
+  mutate(DOI365 = round(DOY + 365)) %>%
+  select(-DOY)
+
+## NOTE: We could filter out based on the STD of NDVI
+## ... if STD is too high, too variable 
+## ... (either due to diff land cover or diff dates of composite within 9 pixel zone)
 
 
 # get fit regress data...
 load(paste0('dataProcessing/step2_deriveCoverCropAlbedo/regres_df.RData'))
 
   
-
-
-
 # join dataset of LANDSAT values with those from MODIS
 outDF0 <- outDF %>% 
   left_join(select(ptsNDVImin, POINT_ID, ref_year, NDVI),
