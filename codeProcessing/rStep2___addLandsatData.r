@@ -7,6 +7,7 @@
 
 
 
+
 # read LUCAS points
 ptsAll <- sf::st_read('dataInput/LUCAS_ARABLE.shp', quiet = TRUE)
 

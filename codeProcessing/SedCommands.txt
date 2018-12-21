@@ -1,0 +1,179 @@
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesgpp2003.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesgpp_clean2003.csv
+
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesalbedo2003.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesalbedo_clean2003.csv
+
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesReflect2003.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesReflect_clean2003.csv
+
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesQUAL2003.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesQUAL_clean2003.csv
+
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesSNR2003.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesSNR_clean2003.csv
+
+ 
+
+
+### 2004
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesgpp2004.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesgpp_clean2004.csv
+
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesalbedo2004.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesalbedo_clean2004.csv
+
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesReflect2004.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesReflect_clean2004.csv
+
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesQUAL2004.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesQUAL_clean2004.csv
+
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesSNR2004.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesSNR_clean2004.csv
+
+
+### 2005
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesgpp2005.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesgpp_clean2005.csv
+
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesalbedo2005.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesalbedo_clean2005.csv
+
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesReflect2005.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesReflect_clean2005.csv
+
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesQUAL2005.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesQUAL_clean2005.csv
+
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesSNR2005.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesSNR_clean2005.csv
+
+
+### 2006
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesgpp2006.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesgpp_clean2006.csv
+
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesalbedo2006.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesalbedo_clean2006.csv
+
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesReflect2006.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesReflect_clean2006.csv
+
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesQUAL2006.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesQUAL_clean2006.csv
+
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesSNR2006.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesSNR_clean2006.csv
+
+
+### 2007
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesgpp2007.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesgpp_clean2007.csv
+
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesalbedo2007.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesalbedo_clean2007.csv
+
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesReflect2007.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesReflect_clean2007.csv
+
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesQUAL2007.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesQUAL_clean2007.csv
+
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesSNR2007.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesSNR_clean2007.csv
+
+
+### 2008
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesgpp2008.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesgpp_clean2008.csv
+
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesalbedo2008.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesalbedo_clean2008.csv
+
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesReflect2008.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesReflect_clean2008.csv
+
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesQUAL2008.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesQUAL_clean2008.csv
+
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesSNR2008.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesSNR_clean2008.csv
+
+
+### 2009
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesgpp2009.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesgpp_clean2009.csv
+
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesalbedo2009.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesalbedo_clean2009.csv
+
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesReflect2009.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesReflect_clean2009.csv
+
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesQUAL2009.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesQUAL_clean2009.csv
+
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesSNR2009.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesSNR_clean2009.csv
+
+### 2010
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesgpp2010.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesgpp_clean2010.csv
+
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesalbedo2010.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesalbedo_clean2010.csv
+
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesReflect2010.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesReflect_clean2010.csv
+
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesQUAL2010.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesQUAL_clean2010.csv
+
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesSNR2010.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesSNR_clean2010.csv
+
+### 2011
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesgpp2011.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesgpp_clean2011.csv
+
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesalbedo2011.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesalbedo_clean2011.csv
+
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesReflect2011.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesReflect_clean2011.csv
+
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesQUAL2011.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesQUAL_clean2011.csv
+
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesSNR2011.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesSNR_clean2011.csv
+
+### 2012
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesgpp2012.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesgpp_clean2012.csv
+
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesalbedo2012.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesalbedo_clean2012.csv
+
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesReflect2012.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesReflect_clean2012.csv
+
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesQUAL2012.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesQUAL_clean2012.csv
+
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesSNR2012.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesSNR_clean2012.csv
+
+### 2013
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesgpp2013.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesgpp_clean2013.csv
+
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesalbedo2013.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesalbedo_clean2013.csv
+
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesReflect2013.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesReflect_clean2013.csv
+
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesQUAL2013.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesQUAL_clean2013.csv
+
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesSNR2013.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesSNR_clean2013.csv
+
+### 2014
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesgpp2014.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesgpp_clean2014.csv
+
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesalbedo2014.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesalbedo_clean2014.csv
+
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesReflect2014.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesReflect_clean2014.csv
+
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesQUAL2014.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesQUAL_clean2014.csv
+
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesSNR2014.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesSNR_clean2014.csv
+
+
+
+### 2015
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesgpp2015.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesgpp_clean2015.csv
+
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesalbedo2015.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesalbedo_clean2015.csv
+
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesReflect2015.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesReflect_clean2015.csv
+
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesQUAL2015.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesQUAL_clean2015.csv
+
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesSNR2015.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesSNR_clean2015.csv
+
+### 2016
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesgpp2016.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesgpp_clean2016.csv
+
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesalbedo2016.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesalbedo_clean2016.csv
+
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesReflect2016.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesReflect_clean2016.csv
+
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesQUAL2016.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesQUAL_clean2016.csv
+
+sed -e 's/\[//g' -e 's/\]//g' /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesSNR2016.csv > /data/cecchgu/LUCAS/DATA_CSV_GEE_LATEST_DEC/LabeledPatchesSNR_clean2016.csv
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -16,6 +16,9 @@ ndays <- 150
 
 # Process pts #
 
+ptsAll <- sf::st_read('dataInput/LUCAS_ARABLE.shp', quiet = TRUE)
+LptList <- ptsAll$POINT_ID
+
 # function to apply to each point
 extractData <- function(Lpt){
   # declare window size
@@ -96,11 +99,11 @@ extractData <- function(Lpt){
   return(dfout)
 }
 
-r <- sample(x = 1:length(LptList), size = 15) # just for tests
+r <- sample(x = 1:length(LptList), size = 50) # just for tests
 
 
 outDF <- NULL
-years <- c(2003:2005,2007:2012,2016)
+years <- c(2003:2016)
 
 for(iYear in years){
  
