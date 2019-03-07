@@ -11,7 +11,7 @@ require(scales)
 require(grid)
 require(RColorBrewer)
 require(sf)
-
+require(here)
 
 ### path initialization ###
 
@@ -34,9 +34,9 @@ ptsAll <- sf::st_read('dataInput/LUCAS_ARABLE.shp', quiet = TRUE)
 
 ### Process pts ###
 source('codeProcessing/rStep1___fitRegressions.r')
-
-### get Landsat NDVI values...
-source('codeProcessing/rStep2___addLandsatData.r')
+# 
+# ### get Landsat NDVI values...
+# source('codeProcessing/rStep2___addLandsatData.r')
 
 
 

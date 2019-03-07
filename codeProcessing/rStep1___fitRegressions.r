@@ -19,6 +19,8 @@ ndays <- 150
 ptsAll <- sf::st_read('dataInput/LUCAS_ARABLE.shp', quiet = TRUE)
 LptList <- ptsAll$POINT_ID
 
+no.pts <- data.frame(NULL)
+
 # function to apply to each point
 extractData <- function(Lpt){
   # declare window size
@@ -66,21 +68,25 @@ extractData <- function(Lpt){
     
     # base filter
     datf0 <- filter(dat,SNR>minSNR,SNW==0,ALB>0,dist<minDist)
-    if(dim(datf0)[1]==0){print(paste('No data left to plot for point', Lpt)); return(dfout=NULL)}
+    if(dim(datf0)[1]==0){
+      no.pts <- bind_cols(no.pts, data.frame(POINT_ID = Lpt, iYear = iYear))
+      #print(paste('No data left to plot for point', Lpt)); 
+      return(dfout=NULL)
+      }
     
     # get all times 
     timeVct <- unique(datf0$time)
     # max time limits
-    TIME_lims <- c(min(timeVct),max(timeVct))
+    TIME_lims <- c(min(timeVct), max(timeVct))
     # get maxtime
-    dum1 <-datf0 %>% group_by(time) %>% summarise(meanNDV=mean(NDV,na.rm=T))
-    timeMax <- dum1$time[which(dum1$meanNDV==max(dum1$meanNDV))]
+    dum1 <-datf0 %>% group_by(time) %>% summarise(meanNDV = mean(NDV, na.rm=T))
+    timeMax <- dum1$time[which(dum1$meanNDV == max(dum1$meanNDV))]
     # get mintime
-    dum2 <- filter(dum1,time<=timeMax,time>timeMax-ndays)
-    timeMin <- dum2$time[which(dum2$meanNDV==min(dum2$meanNDV))]
+    dum2 <- filter(dum1, time <= timeMax, time > timeMax-ndays)
+    timeMin <- dum2$time[which(dum2$meanNDV == min(dum2$meanNDV))]
     
     
-    fit <- lm(ALB ~ NDV, data = filter(datf0,time<=timeMax,time>timeMin))  
+    fit <- lm(ALB ~ NDV, data = filter(datf0,time <= timeMax, time > timeMin))  
     
     
     
@@ -99,7 +105,7 @@ extractData <- function(Lpt){
   return(dfout)
 }
 
-r <- sample(x = 1:length(LptList), size = 50) # just for tests
+#r <- sample(x = 1:length(LptList), size = 100) # just for tests
 
 
 outDF <- NULL
@@ -111,8 +117,8 @@ for(iYear in years){
   # read full data file
   rawCsv <- readr::read_csv(paste0(dpath,'FileGregAllFlagsNDVI',iYear,'.csv'))
   
-  # outList <- lapply(LptList,FUN = extractData)
-  outList <- lapply(LptList[r],FUN = extractData) # just for tests
+  outList <- lapply(LptList, FUN = extractData)
+  #outList <- lapply(LptList[r],FUN = extractData) # just for tests
   
   outDF0 <- do.call('rbind',outList)
   outDF <- bind_rows(outDF,outDF0)
