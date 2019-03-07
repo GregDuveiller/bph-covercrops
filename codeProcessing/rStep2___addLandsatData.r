@@ -88,6 +88,32 @@ ggplot(outDF1)+
   scale_fill_viridis_d('adj.r.sqr')
 
 
+
+outDF_soft <- outDF1 %>%
+  filter(n > 30, adj.r.sqr > 0.1) %>%
+  group_by(POINT_ID) %>%
+  summarize(BareSoil.Albedo = mean(Alb.Min.L, na.rm = T), 
+            MaxVgt.Albedo = mean(Alb.Max.M, na.rm = T)) %>%
+  left_join(select(ptsAll, POINT_ID, GPS_LAT, GPS_LONG), by='POINT_ID') 
+
+outDF_hard <- outDF1 %>%
+  filter(n > 100, adj.r.sqr > 0.5) %>%
+  group_by(POINT_ID) %>%
+  summarize(BareSoil.Albedo = mean(Alb.Min.L, na.rm = T), 
+            MaxVgt.Albedo = mean(Alb.Max.M, na.rm = T)) %>%
+  left_join(select(ptsAll, POINT_ID, GPS_LAT, GPS_LONG), by='POINT_ID') 
+
+
+dir.create(opath)
+save('outDF_hard', file = paste0(opath,'deltaCC_df_hard.RData'))
+save('outDF_soft', file = paste0(opath,'deltaCC_df_soft.RData'))
+
+
+
+
+
+
+################
 outDF2 <- outDF1 %>%
   filter(n > 30, adj.r.sqr > 0.1) %>%
   group_by(POINT_ID) %>%
@@ -96,6 +122,21 @@ outDF2 <- outDF1 %>%
             mu.Alb.Min.M = mean(Alb.Min.M, na.rm = T), 
             mu.Alb.Max.M = mean(Alb.Max.M, na.rm = T)) %>%
   left_join(select(ptsAll, POINT_ID, GPS_LAT, GPS_LONG), by='POINT_ID') 
+
+
+
+outDF3 <- outDF1 %>%
+  filter(n > 100, adj.r.sqr > 0.5) %>%
+  group_by(POINT_ID) %>%
+  summarize(mu.Alb.Min.L = mean(Alb.Min.L, na.rm = T), 
+            mu.Alb.Max.L = mean(Alb.Max.L, na.rm = T),
+            mu.Alb.Min.M = mean(Alb.Min.M, na.rm = T), 
+            mu.Alb.Max.M = mean(Alb.Max.M, na.rm = T)) %>%
+  left_join(select(ptsAll, POINT_ID, GPS_LAT, GPS_LONG), by='POINT_ID') 
+
+
+
+
 
 ggplot(outDF2) + 
   geom_point(aes(x = GPS_LONG, y = GPS_LAT, colour = mu.Alb.Max.L-mu.Alb.Min.L))+
@@ -156,7 +197,7 @@ ggplot(outDF3) +
 
 
 ggplot(outDF3) + 
-  geom_point(aes(x = GPS_LONG, y = GPS_LAT, colour = mu.Alb.Min.M-mu.Alb.Min.L))+
+  geom_point(aes(x = GPS_LONG, y = GPS_LAT, colour = mu.Alb.Min.M-mu.Alb.M.L))+
   scale_colour_gradientn(limits=c(-0.1,+0.1),colors=brewer.pal(9,'RdBu'),oob=squish)+
   theme(legend.position = 'bottom',
         legend.key.width = unit(1,'in'))+
@@ -178,7 +219,7 @@ ggplot(outDF3) +
 #             MODIS = b0 + b1 * NDVI.M.max,
 #             POINT_ID = POINT_ID,
 #             ref_year = ref_year) %>%
-#   gather(MaxVgt.Albedo.Source, MaxVgt.Albedo, Landsat, MODIS)
+#   gather(MaxVgt.Albedo.Source, MaxVgt.Albedo , Landsat, MODIS)
 
 pts0 <- inner_join(pts0.bare,pts0.vgtn,by=c('POINT_ID','ref_year')) %>%
   left_join(select(ptsAll, POINT_ID, GPS_LAT, GPS_LONG), by='POINT_ID')  
@@ -232,6 +273,5 @@ ggplot(outDF0agr) +
 # 
 
 
-dir.create(opath)
-save('pts0', file = paste0(opath,'deltaCC_df_.RData'))
+
 
