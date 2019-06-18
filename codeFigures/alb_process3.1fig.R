@@ -150,15 +150,15 @@ fig2 <- ggplot(GHGbdg, aes(year, dSOC ,  colour = scenarios, fill = scenarios)) 
   scale_y_continuous(limits=c(-30, 20)) +
   labs(x = "year" , y =  lab) +
   geom_hline(yintercept=0, linetype="solid", alpha=0.4) +
- geom_vline(xintercept=2030, linetype="dashed", alpha=0.2) +
- geom_vline(xintercept=2100, linetype="dashed", alpha=0.2) +
+  geom_vline(xintercept=2030, linetype="dashed", alpha=0.2) +
+  geom_vline(xintercept=2100, linetype="dashed", alpha=0.2) +
   theme(legend.position = c(.25, 0.83)) +
-theme_bw()+ 
-theme(legend.background = element_rect(fill="white")) + 
-theme(legend.background = element_rect(colour = "black")) +
-theme(legend.key = element_rect(colour = "white")) + 
-theme(legend.position = "none")+
-theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
+  theme_bw()+ 
+  theme(legend.background = element_rect(fill="white")) + 
+  theme(legend.background = element_rect(colour = "black")) +
+  theme(legend.key = element_rect(colour = "white")) + 
+  theme(legend.position = "none")+
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
 
 
 #####################################################################################################################################################
@@ -183,23 +183,23 @@ GHGsen<-subset(GHGsen, RFa_Wm2>0)####!!!!
 #####################################################################################################################################################figure 2c,d
 #####################################################################################################################################################
 fig2.1<-ggplot() + geom_polygon(data = states.shp.f, aes(x = long, y = lat, group = group), color = "grey20", fill="grey90", size = 0.25) + 
- geom_point(data=GHGsen, aes(x=GPS_LONG,  y=GPS_LAT, colour = GHGr30), alpha=0.4, size=0.8)+
-scale_colour_gradient2(limits=c(0, 1), low="blue", mid= "green", high="yellow", midpoint=0.5,  na.value = "grey80", name="") +
-theme_bw()+ 
-theme(legend.background = element_rect(fill="white")) + 
-theme(legend.background = element_rect(colour = "black")) +
-theme(legend.key = element_rect(colour = "white")) + 
- theme(legend.position = "none") 
+  geom_point(data=GHGsen, aes(x=GPS_LONG,  y=GPS_LAT, colour = GHGr30), alpha=0.4, size=0.8)+
+  scale_colour_gradient2(limits=c(0, 1), low="blue", mid= "green", high="yellow", midpoint=0.5,  na.value = "grey80", name="") +
+  theme_bw()+ 
+  theme(legend.background = element_rect(fill="white")) + 
+  theme(legend.background = element_rect(colour = "black")) +
+  theme(legend.key = element_rect(colour = "white")) + 
+  theme(legend.position = "none") 
 
 fig2.2<-ggplot() + geom_polygon(data = states.shp.f, aes(x = long, y = lat, group = group), color = "grey20", fill="grey90", size = 0.25) + 
- geom_point(data=GHGsen, aes(x=GPS_LONG,  y=GPS_LAT, colour = GHGr00), alpha=0.4, size=0.8)+
-scale_colour_gradient2(limits=c(0, 1), low="blue", mid= "green", high="yellow", midpoint=0.5,  na.value = "grey80", name="") +
-theme_bw()+ 
-theme(legend.background = element_rect(fill="transparent")) + 
-theme(legend.background = element_rect(colour = "transparent")) +
-theme(legend.key = element_rect(colour = "white")) + 
- #theme(legend.position = "right") 
- theme(legend.position = c(.15, 0.852))
+  geom_point(data=GHGsen, aes(x=GPS_LONG,  y=GPS_LAT, colour = GHGr00), alpha=0.4, size=0.8)+
+  scale_colour_gradient2(limits=c(0, 1), low="blue", mid= "green", high="yellow", midpoint=0.5,  na.value = "grey80", name="") +
+  theme_bw()+ 
+  theme(legend.background = element_rect(fill="transparent")) + 
+  theme(legend.background = element_rect(colour = "transparent")) +
+  theme(legend.key = element_rect(colour = "white")) + 
+  #theme(legend.position = "right") 
+  theme(legend.position = c(.15, 0.852))
 
 multiplot(fig2, fig2.1, fig2.2, cols = 3)
 
