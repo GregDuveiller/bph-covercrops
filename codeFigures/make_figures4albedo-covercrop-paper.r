@@ -48,7 +48,7 @@ g.map.TransSWin <- ggplot(pts_sf) +
 
 g.map.BareSoilA <- ggplot(pts_sf) + 
   geom_sf(data = europe_laea, fill = 'grey50')+
-  geom_sf(aes(colour = BareSoil.Albedo, size = pointSize))+
+  geom_sf(aes(colour = BareSoil.Albedo), size = pointSize)+
   scale_colour_viridis_c("Bare soil albedo",
                          limits = c(0.03,0.32), 
                          option = "viridis", oob = squish)+
@@ -59,7 +59,7 @@ g.map.BareSoilA <- ggplot(pts_sf) +
 
 g.map.AlbedoChg <- ggplot(pts_sf) + 
   geom_sf(data = europe_laea, fill = 'grey50')+
-  geom_sf(aes(colour = a_dif, size = pointSize))+
+  geom_sf(aes(colour = a_dif), size = pointSize)+
   scale_colour_gradientn("Albedo change",
                          limits = c(-0.03,0.03), 
                          colors = rev(brewer.pal(9,'RdBu')), oob = squish)+
@@ -70,13 +70,12 @@ g.map.AlbedoChg <- ggplot(pts_sf) +
 
 g.map.AlbRadFor <- ggplot(pts_sf) + 
   geom_sf(data = europe_laea, fill = 'grey50')+
-  geom_sf(aes(colour = RFa_Wm2, size = pointSize))+
+  geom_sf(aes(colour = RFa_Wm2), size = pointSize)+
   scale_colour_gradientn("Albedo radiative forcing",
                          limits = c(-1.5,1.5), 
                          colors = rev(brewer.pal(9,'RdBu')), oob = squish)+
   coord_sf(xlim = c(2.5e6,6e6), ylim = c(1.5e6,4.5e6))+
-  theme(legend.position = 'bottom',
-        legend.key.width = unit(1,'in'))+
+  custom_theme +
   guides(colour = guide_colourbar(title.position = 'top', title.hjust = 0.5))
 
 
