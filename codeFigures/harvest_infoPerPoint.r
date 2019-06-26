@@ -8,6 +8,8 @@ iYear <- 2016
 rawCsv <- readr::read_csv(paste0('dataProcessing/step1_dataExtractionFromGEE/FileGregAllFlagsNDVI',iYear,'.csv'))
 
 Lpt <- '28761622'
+Lpt <- '34362088'
+
 
 # parametrization
 minSNR <- 25
@@ -73,7 +75,8 @@ dum2 <- filter(dum1, time <= timeMax, time > timeMax-ndays)
 timeMin <- dum2$time[which(dum2$meanNDV == min(dum2$meanNDV))]
 
 
-
+save('dat','datf0','timeMax','timeMin','ndays','minDist','minSNR','iYear',
+     file = paste0('dataFigures/dat4figLUCASpt/pt_',Lpt,'/dat_',Lpt,'.Rda'))
 
 # fit <- lm(ALB ~ NDV, data = filter(datf0, time <= timeMax, time > timeMin))  
 # 
