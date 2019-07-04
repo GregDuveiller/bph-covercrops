@@ -4,25 +4,25 @@ require(readr)
 require(dplyr)
 require(here)
 
-iYear <- 2016
+iYear <- 2008
 rawCsv <- readr::read_csv(paste0('dataProcessing/step1_dataExtractionFromGEE/FileGregAllFlagsNDVI',iYear,'.csv'))
 
-Lpt <- '28761622'
-Lpt <- '34362088'
+# Lpt <- '28761622'
+# Lpt <- '34362088'
+#Lpt <- '37923016'
+#Lpt <- '36323364'
 
+Lpt <- '36323364'
 
 # parametrization
 minSNR <- 25
 minDist <- 7
 ndays <- 150
-
-no.pts <- data.frame(NULL)
+# declare window size
+ws = 21 
 
 
 # function to extract infor from a single point
-
-# declare window size
-ws = 21 
 
 # subset data and sort out some column names
 subDat <- rawCsv %>% 
@@ -76,14 +76,14 @@ timeMin <- dum2$time[which(dum2$meanNDV == min(dum2$meanNDV))]
 
 
 save('dat','datf0','timeMax','timeMin','ndays','minDist','minSNR','iYear',
-     file = paste0('dataFigures/dat4figLUCASpt/pt_',Lpt,'/dat_',Lpt,'.Rda'))
+     file = paste0('dataFigures/dat4figLUCASpt/pt_',Lpt,'/dat_',Lpt,'_',iYear,'.Rda'))
 
 # fit <- lm(ALB ~ NDV, data = filter(datf0, time <= timeMax, time > timeMin))  
 # 
 # 
 # 
 # dfout <- data.frame(POINT_ID=Lpt,
-#                     ref_year=iYear+1,
+#                     ref_ye  ar=iYear+1,
 #                     NDVI.M.min = min(dum2$meanNDV),
 #                     NDVI.M.max = max(dum1$meanNDV),
 #                     b0=fit$coefficients[1],
