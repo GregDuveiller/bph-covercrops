@@ -1,8 +1,10 @@
 require(ggplot2)
 require(here)
-
+require(sf)
+require(dplyr)
 
 dat <- read.csv(file = 'dataFigures/alb_elabo3.1.PET.csv')
+
 
 # 
 # ggplot(dat %>%
@@ -83,3 +85,88 @@ print(g.clsp.AlbedoChg, vp = viewport(width = 0.5, height = 0.5, x = 0.0, y = 0.
 print(g.clsp.AlbRadFor, vp = viewport(width = 0.5, height = 0.5, x = 0.5, y = 0.0, just=c(0,0)))
 
 dev.off()
+
+
+
+
+
+## Variant plot with other soil properties... ---------
+
+pt_info <-  sf::st_read('dataInput/LUCAS_ARABLE.shp')
+dat.all <- left_join(pt_info, dat, by = c('POINT_ID', 'EOBid', 'sample_ID', 'GPS_LAT', 'GPS_LONG')) 
+
+
+g.clsp.BareSoilA.CaCO3 <- ggplot(dat.all) + 
+  geom_point(aes(x = PPT/PET, y = CaCO3, colour = BareSoil.Albedo), size = pointSize)+
+  scale_colour_viridis_c("Bare soil albedo",
+                         limits = c(0.05,0.25), 
+                         option = "viridis", 
+                         oob = squish)+
+  labs(tag = 'a') + 
+  custom_theme +  
+  guides(colour = guide_colourbar(title.position = 'top', title.hjust = 0.5))
+
+
+
+g.clsp.BareSoilA.OC <- ggplot(dat.all) + 
+  geom_point(aes(x = PPT/PET, y = OC, colour = BareSoil.Albedo), size = pointSize)+
+  scale_colour_viridis_c("Bare soil albedo",
+                         limits = c(0.05,0.25), 
+                         option = "viridis", 
+                         oob = squish)+
+  labs(tag = 'b') + 
+  custom_theme +  
+  guides(colour = guide_colourbar(title.position = 'top', title.hjust = 0.5))
+
+
+
+g.clsp.BareSoilA.sand <- ggplot(dat.all) + 
+  geom_point(aes(x = PPT/PET, y = sand, colour = BareSoil.Albedo), size = pointSize)+
+  scale_colour_viridis_c("Bare soil albedo",
+                         limits = c(0.05,0.25), 
+                         option = "viridis", 
+                         oob = squish)+
+  labs(tag = 'c') + 
+  custom_theme +  
+  guides(colour = guide_colourbar(title.position = 'top', title.hjust = 0.5))
+
+
+g.clsp.BareSoilA.CEC <- ggplot(dat.all) + 
+  geom_point(aes(x = PPT/PET, y = CEC, colour = BareSoil.Albedo), size = pointSize)+
+  scale_colour_viridis_c("Bare soil albedo",
+                         limits = c(0.05,0.25), 
+                         option = "viridis", 
+                         oob = squish)+
+  labs(tag = 'd') + 
+  custom_theme +  
+  guides(colour = guide_colourbar(title.position = 'top', title.hjust = 0.5))
+
+
+
+fname <- 'testfig___BareSoilAlbedo_SoilProperties'
+figW <- 10; figH <- 11; fmt <- 'png'
+fullfname <- paste0(fpath, fname, '.', fmt)
+if(fmt=='png'){png(fullfname, width = figW, height = figH, units = "in", res= 150)}
+if(fmt=='pdf'){pdf(fullfname, width = figW, height = figH)}
+print(g.clsp.BareSoilA.CaCO3, vp = viewport(width = 0.5, height = 0.5, x = 0.0, y = 0.5, just=c(0,0)))
+print(g.clsp.BareSoilA.OC,    vp = viewport(width = 0.5, height = 0.5, x = 0.5, y = 0.5, just=c(0,0)))
+print(g.clsp.BareSoilA.sand,  vp = viewport(width = 0.5, height = 0.5, x = 0.0, y = 0.0, just=c(0,0)))
+print(g.clsp.BareSoilA.CEC,   vp = viewport(width = 0.5, height = 0.5, x = 0.5, y = 0.0, just=c(0,0)))
+
+dev.off()
+
+
+## Other variant plot with other soil properties... ---------
+
+
+g.clsp.BareSoilA.CaCO3.cat <- ggplot(dat.all %>%
+                                       mutate(CaCO3_cat = cut(CaCO3, c(0,100,500)))) + 
+  geom_point(aes(x = PPT, y = PET, colour = BareSoil.Albedo), size = pointSize) +
+  scale_colour_viridis_c("Bare soil albedo",
+                         limits = c(0.05,0.25), 
+                         option = "viridis", 
+                         oob = squish)+
+  facet_wrap(~CaCO3_cat) +
+  custom_theme +  
+  guides(colour = guide_colourbar(title.position = 'top', title.hjust = 0.5))
+
