@@ -160,7 +160,7 @@ dev.off()
 
 
 g.clsp.BareSoilA.CaCO3.cat <- ggplot(dat.all %>%
-                                       mutate(CaCO3_cat = cut(CaCO3, c(0,100,500)))) + 
+                                       mutate(CaCO3_cat = cut(CaCO3, c(0,250,900),include.lowest = T))) + 
   geom_point(aes(x = PPT, y = PET, colour = BareSoil.Albedo), size = pointSize) +
   scale_colour_viridis_c("Bare soil albedo",
                          limits = c(0.05,0.25), 
@@ -170,3 +170,5 @@ g.clsp.BareSoilA.CaCO3.cat <- ggplot(dat.all %>%
   custom_theme +  
   guides(colour = guide_colourbar(title.position = 'top', title.hjust = 0.5))
 
+ggsave(filename = 'testfig___albedoCaCO3_cat.png', path = fpath,
+       plot = g.clsp.BareSoilA.CaCO3.cat, width = 10, height = 6)
