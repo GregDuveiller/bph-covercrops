@@ -88,7 +88,14 @@ dev.off()
 
 
 
+## EXTRA Stuff to explore/improve !! -----
 
+# - try a CaCO3 + CEC combo ... i.e. bring them in the same axes... 
+# - try these plots on Radiative forcing 
+#   (but also, this RF, is it an average on the year, or only over cover crop?)
+# - try SM from satellite in C3S
+# - SM > OC > CaCO3 ... 3 factors affecting bare soil albedo in order of how 
+#   'easy they could be changed by climate change'
 
 ## Variant plot with other soil properties... ---------
 
