@@ -26,7 +26,7 @@ pt <- pt_info %>%
 
 # load albedo
 dat <- read.csv(file = 'dataFigures/alb_elabo3.1.PET.csv') %>%
-  dplyr::select(POINT_ID, BareSoil.Albedo, PET, PPT)
+  dplyr::select(POINT_ID, BareSoil.Albedo, RFa_Wm2, PET, PPT)
 
 pt_all <- left_join(pt, dat, by = 'POINT_ID')
 
@@ -61,3 +61,23 @@ g.clsp.BareSoilA.SM <- ggplot(pt_all %>%
 ggsave(filename = 'testfig___albedo_SM_CaCO3_cat.png', path = fpath,
        plot = g.clsp.BareSoilA.SM, width = 10, height = 10)
 
+
+
+
+
+
+g.clsp.RFa_Wm2.SM <- ggplot(pt_all %>% 
+                                filter(!is.na(RFa_Wm2)) %>%
+                                mutate(CaCO3_cat = cut(CaCO3, c(0,1,20,250,900),include.lowest = T))) + 
+  geom_point(aes(x = PPT/PET, y = SM, colour = RFa_Wm2), size = pointSize)+
+    scale_colour_gradientn("RFa_Wm2",
+                           colours = RColorBrewer::brewer.pal(9,'RdBu'),
+                         limits = c(-0.5,0.5), 
+                         oob = squish) +
+  facet_wrap(~CaCO3_cat, labeller = label_both) + 
+  labs(tag = 'a') + 
+  custom_theme +  
+  guides(colour = guide_colourbar(title.position = 'top', title.hjust = 0.5))
+
+ggsave(filename = 'testfig___RadForcing_SM_CaCO3_cat.png', path = fpath,
+       plot = g.clsp.RFa_Wm2.SM, width = 10, height = 10)
