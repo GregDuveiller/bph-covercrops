@@ -116,6 +116,11 @@ save(dat, file = 'dataFigures/data4scen1_normalCC-noSNOW.Rda')
 dat <- getLugatoVars('dataFigures/NCC_WP3.RData')
 save(dat, file = 'dataFigures/data4scen3_brightCC-noSNOW.Rda') 
 
+dat <- getLugatoVars('dataFigures/NCC_WP2.RData')
+save(dat, file = 'dataFigures/data4scen2_normalCC-withSNOW.Rda') 
+
+dat <- getLugatoVars('dataFigures/NCC_WP4.RData')
+save(dat, file = 'dataFigures/data4scen4_mutantCC-withSNOW.Rda') 
 
 
 
