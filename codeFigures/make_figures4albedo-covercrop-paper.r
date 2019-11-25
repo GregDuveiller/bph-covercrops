@@ -178,13 +178,13 @@ landColor <- 'grey60'
 xLims <- c(2.5e6,6e6)
 yLims <- c(1.5e6,4.5e6)
 
-
+custom_theme_maps <- theme(legend.position = 'bottom',
+                           legend.key.width = unit(0.8,'in'),
+                           plot.tag = element_text(face = "bold"))
 
 #### FIG 1 #### ----
 
-custom_theme_maps <- theme(legend.position = 'top',
-                      legend.key.width = unit(0.8,'in'),
-                      plot.tag = element_text(face = "bold"))
+
 
 anot.TransSWin <- bquote(mu(sigma) == .(round(mean(pts_sf_aLCS_1$SWin_Ta_Wm2, na.rm=TRUE),4))
                          %+-% .(round(sd(pts_sf_aLCS_1$SWin_Ta_Wm2, na.rm=TRUE),4)))
@@ -197,7 +197,8 @@ g.map.TransSWin <- ggplot(pts_sf_aLCS_1) +
                          option = "magma",
                          oob = squish)+
   coord_sf(xlim = xLims, ylim = yLims) +
-  labs(tag = 'a', caption = anot.TransSWin) + 
+  # labs(tag = 'a', caption = anot.TransSWin) + 
+  labs(caption = anot.TransSWin) + 
   custom_theme_maps +  
   #geom_text(data = data.frame(x = 2.9e6, y = 4.4e6, label = anot)) +
   #annotate(geom = "text", x = 2.9e6, y = 4.4e6, label = anot) +
@@ -216,7 +217,8 @@ g.map.BareSoilA <- ggplot(pts_sf_aLCS_1) +
                          option = "viridis", 
                          oob = squish)+
   coord_sf(xlim = xLims, ylim = yLims) +
-  labs(tag = 'b', caption = anot.BareSoilA) + 
+  # labs(tag = 'b', caption = anot.BareSoilA) + 
+  labs(caption = anot.BareSoilA) + 
   custom_theme_maps +  
   guides(colour = guide_colourbar(title.position = 'top', title.hjust = 0.5))
 
@@ -233,7 +235,8 @@ g.map.AlbedoChg <- ggplot(pts_sf_aLCS_1) +
                          colors = brewer.pal(9,'PiYG'), 
                          oob = squish)+
   coord_sf(xlim = xLims, ylim = yLims) +
-  labs(tag = 'c', caption = anot.AlbedoChg) + 
+  # labs(tag = 'c', caption = anot.AlbedoChg) + 
+  labs(caption = anot.AlbedoChg) + 
   custom_theme_maps +  
   guides(colour = guide_colourbar(title.position = 'top', title.hjust = 0.5))
 
@@ -251,7 +254,8 @@ g.map.AlbRadFor <- ggplot(pts_sf_aLCS_1) +
                          colors = brewer.pal(9,'RdBu'), 
                          oob = squish)+
   coord_sf(xlim = xLims, ylim = yLims) +
-  labs(tag = 'd', caption = anot.AlbRadFor) + 
+  # labs(tag = 'd', caption = anot.AlbRadFor) + 
+  labs(caption = anot.AlbRadFor) + 
   custom_theme_maps +  
   guides(colour = guide_colourbar(title.position = 'top', title.hjust = 0.5))
 
@@ -266,10 +270,10 @@ print(g.map.BareSoilA, vp = viewport(width = 0.5, height = 0.5, x = 0.5, y = 0.5
 print(g.map.AlbedoChg, vp = viewport(width = 0.5, height = 0.5, x = 0.0, y = 0.0, just=c(0,0)))
 print(g.map.AlbRadFor, vp = viewport(width = 0.5, height = 0.5, x = 0.5, y = 0.0, just=c(0,0)))
 
-# grid.text(expression(bold("a")), x = unit(0.03, "npc"), y = unit(0.96, "npc"), gp=gpar(fontsize=18))
-# grid.text(expression(bold("b")), x = unit(0.53, "npc"), y = unit(0.96, "npc"), gp=gpar(fontsize=18))
-# grid.text(expression(bold("c")), x = unit(0.03, "npc"), y = unit(0.46, "npc"), gp=gpar(fontsize=18))
-# grid.text(expression(bold("d")), x = unit(0.53, "npc"), y = unit(0.46, "npc"), gp=gpar(fontsize=18))
+grid.text(expression(bold("a")), x = unit(0.07, "npc"), y = unit(0.96, "npc"), gp=gpar(fontsize=18))
+grid.text(expression(bold("b")), x = unit(0.57, "npc"), y = unit(0.96, "npc"), gp=gpar(fontsize=18))
+grid.text(expression(bold("c")), x = unit(0.07, "npc"), y = unit(0.46, "npc"), gp=gpar(fontsize=18))
+grid.text(expression(bold("d")), x = unit(0.57, "npc"), y = unit(0.46, "npc"), gp=gpar(fontsize=18))
 
 dev.off()
 
@@ -281,11 +285,11 @@ dev.off()
 scen.cols <- c('CO2_soil' = 'firebrick3',   # 'tan4', 
                'N2O_dir' ='goldenrod',         # 'goldenrod', 
                'albedo' = 'cornflowerblue')
-scen.lbls <- c('CO2_soil' = 'CO2', 
-               'N2O_dir' = 'N2O', 
+scen.lbls <- c('CO2_soil' = bquote('CO'[2]), 
+               'N2O_dir' = bquote('N'[2]*'O'), 
                'albedo' = 'Albedo')
 
-lab <- expression(Delta* "Soil fluxes (Mg CO"[2]*"eq Ha"^-1*")")   ##labels
+lab <- expression(Delta* "Soil fluxes (Mg CO"[2]*"e ha"^-1*")")   ##labels
 
 # add dummy title on top for projections
 GHGbdg$Simulation <- 'Projected temporal trends'
@@ -364,39 +368,51 @@ dev.off()
 
 effects.cols <- c('BGC' = 'coral', 
                   'BPH' = 'cornflowerblue')
-effects.lbls <- c('BGC' = 'Biogeochemical (CO2 + N2O)', 
+effects.lbls <- c('BGC' = bquote('Biogeochemical (CO'[2]*'+ N'[2]*'O)'), 
                   'BPH' = 'Biogeophysical (albedo)')
 
 dat.perCountry$yr_lbl <- paste('Time horizon:', dat.perCountry$yr)
 
 tot.perCountry <- dat.perCountry %>% 
   group_by(ccType, yr_lbl) %>% 
-  summarise(TotalMit = round(sum(CO2.eq), digits = 0))
+  summarise(TotalMit = round(sum(CO2.eq), digits = 0)) %>%
+  mutate(x = 12.5, y = -550)
 
 g.country <- ggplot(dat.perCountry) +
-  geom_bar(aes(x = reorder(Country, Area_Mha), y = CO2.eq, fill = Type), 
-           stat = 'identity', position = 'stack') + 
+  geom_bar(aes(x = reorder(Country, Area_Mha), y = CO2.eq, fill = Type),
+          stat = 'identity', position = 'stack') +
   geom_hline(yintercept = 0, linetype = "solid", colour = 'grey10') +
   coord_polar(theta = "x", direction = -1) +
   geom_label(data = tot.perCountry, size = 3.5,
-             aes(x = 12.5, y = -550,
-                 label = paste('Total mitigation potential:\n', TotalMit, 'Tg CO2 eq.'))) +
+             aes(x = x, y = y, 
+                 label = paste('Total mitigation potential:\n', TotalMit, 'Tg CO2e'))) +
+                 #label = bquote("Total mitigation potential:\n" ~.(TotalMit) ~ "Tg COe"))) +
   facet_grid(ccType ~ yr_lbl) +
-  scale_y_continuous('Mitigation potential in Tg CO2 eq.', limits = c(-700, 0)) +
+  scale_y_continuous(limits = c(-700, 0)) +
   scale_x_discrete('') + 
   scale_fill_manual('Type of effect:', 
                       values = effects.cols, 
                       labels = effects.lbls) +
   theme(legend.position = 'top',
         strip.text = element_text(face = 'bold', size = '12')) +
+  ylab(expression("Mitigation potential (Tg CO"[2]*"e ha"^-1*")")) +
   labs(caption = 'Note: there are insufficient data points for LU, MT, CY and HR.')
 
 fname <- 'Figure3_perCountry'
 figW <- 8; figH <- 8; fmt <- 'png'
 fullfname <- paste0(fpath, fname, '.', fmt)
 
-ggsave(filename = fullfname, plot = g.country, 
-       width = figW, height = figH)
+if(fmt=='png'){png(fullfname, width = figW, height = figH, units = "in", res= 150)}
+if(fmt=='pdf'){pdf(fullfname, width = figW, height = figH)}
+
+print(g.country, vp = viewport(width = 1, height = 1, x = 0.00, y = 0, just=c(0,0)))
+
+grid.text(expression(bold("a")), x = unit(0.14, "npc"), y = unit(0.85, "npc"), gp=gpar(fontsize=18))
+grid.text(expression(bold("b")), x = unit(0.55, "npc"), y = unit(0.85, "npc"), gp=gpar(fontsize=18))
+grid.text(expression(bold("c")), x = unit(0.14, "npc"), y = unit(0.44, "npc"), gp=gpar(fontsize=18))
+grid.text(expression(bold("d")), x = unit(0.55, "npc"), y = unit(0.44, "npc"), gp=gpar(fontsize=18))
+
+dev.off()
 
 
 #### FIG S6 #### ----
@@ -414,7 +430,8 @@ g.map.AlbedoChg <- ggplot(pts_sf_aLCS_2) +
                          colors = brewer.pal(9,'PiYG'), 
                          oob = squish)+
   coord_sf(xlim = xLims, ylim = yLims) +
-  labs(tag = 'a', caption = anot.AlbedoChg) + 
+  # labs(tag = 'a', caption = anot.AlbedoChg) + 
+  labs(caption = anot.AlbedoChg) + 
   custom_theme_maps +  
   guides(colour = guide_colourbar(title.position = 'top', title.hjust = 0.5))
 
@@ -435,7 +452,8 @@ g.map.AlbRadFor <- ggplot(pts_sf_aLCS_2) +
                          colors = brewer.pal(9,'RdBu'), 
                          oob = squish)+
   coord_sf(xlim = xLims, ylim = yLims) +
-  labs(tag = 'b', caption = anot.AlbRadFor) + 
+  # labs(tag = 'b', caption = anot.AlbRadFor) + 
+  labs(caption = anot.AlbRadFor) + 
   custom_theme_maps +  
   guides(colour = guide_colourbar(title.position = 'top', title.hjust = 0.5))
 
@@ -455,10 +473,10 @@ g.country <- ggplot(dat.perCountry_2) +
   geom_hline(yintercept = 0, linetype = "solid", colour = 'grey10') +
   coord_polar(theta = "x", direction = -1) +
   geom_label(data = tot.perCountry, size = 3.5,
-             aes(x = 12.5, y = -550,
-                 label = paste('Total mitigation potential:\n', TotalMit, 'Tg CO2 eq.'))) +
+             aes(x = 12.5, y = -450,
+                 label = paste('Total mitigation potential:\n', TotalMit, 'Tg CO2e'))) +
   facet_grid(ccType ~ yr_lbl) +
-  scale_y_continuous('Mitigation potential in Tg CO2 eq.', limits = c(-700, 0)) +
+  scale_y_continuous(limits = c(-700, 100)) +
   scale_x_discrete('') + 
   scale_fill_manual('Type of effect:', 
                     values = effects.cols, 
@@ -466,8 +484,10 @@ g.country <- ggplot(dat.perCountry_2) +
   theme(legend.position = 'top',
         plot.tag = element_text(face = "bold"),
         strip.text = element_text(face = 'bold', size = '12')) +
-  labs(tag = 'c', caption = 'Note: there are insufficient data points for LU, MT, CY and HR.')
-
+  # labs(tag = 'c', caption = 'Note: there are insufficient data points for LU, MT, CY and HR.') +
+  labs(caption = 'Note: there are insufficient data points for LU, MT, CY and HR.') +
+  ylab(expression("Mitigation potential (Tg CO"[2]*"e ha"^-1*")")) 
+  
 
 
 fname <- 'FigureS6_NormalCCwithSNOW'
@@ -481,11 +501,11 @@ print(g.map.AlbedoChg, vp = viewport(width = 0.5, height = h.t, x = 0.0, y = 1 -
 print(g.map.AlbRadFor, vp = viewport(width = 0.5, height = h.t, x = 0.5, y = 1 - h.t, just=c(0,0)))
 print(g.country, vp = viewport(width = 1, height = 1 - h.t, x = 0.0, y = 0.0, just=c(0,0)))
 
-# grid.text(expression(bold("a")), x = unit(0.03, "npc"), y = unit(0.96, "npc"), gp=gpar(fontsize=18))
-# grid.text(expression(bold("b")), x = unit(0.53, "npc"), y = unit(0.96, "npc"), gp=gpar(fontsize=18))
-# grid.text(expression(bold("c")), x = unit(0.03, "npc"), y = unit(0.46, "npc"), gp=gpar(fontsize=18))
-# grid.text(expression(bold("d")), x = unit(0.53, "npc"), y = unit(0.46, "npc"), gp=gpar(fontsize=18))
-
+grid.text(expression(bold("a")), x = unit(0.07, "npc"), y = unit(0.95, "npc"), gp=gpar(fontsize=18))
+grid.text(expression(bold("b")), x = unit(0.57, "npc"), y = unit(0.95, "npc"), gp=gpar(fontsize=18))
+grid.text(expression(bold("c")), x = unit(0.10, "npc"), y = unit(0.41, "npc"), gp=gpar(fontsize=18))
+grid.text(expression(bold("d")), x = unit(0.55, "npc"), y = unit(0.41, "npc"), gp=gpar(fontsize=18))
+          
 dev.off()
 
 
@@ -505,7 +525,8 @@ g.map.AlbedoChg <- ggplot(pts_sf_aLCS_4) +
                          colors = brewer.pal(9,'PiYG'), 
                          oob = squish)+
   coord_sf(xlim = xLims, ylim = yLims) +
-  labs(tag = 'a', caption = anot.AlbedoChg) + 
+  # labs(tag = 'a', caption = anot.AlbedoChg) + 
+  labs(caption = anot.AlbedoChg) + 
   custom_theme_maps +  
   guides(colour = guide_colourbar(title.position = 'top', title.hjust = 0.5))
 
@@ -526,7 +547,8 @@ g.map.AlbRadFor <- ggplot(pts_sf_aLCS_4) +
                          colors = brewer.pal(9,'RdBu'), 
                          oob = squish)+
   coord_sf(xlim = xLims, ylim = yLims) +
-  labs(tag = 'b', caption = anot.AlbRadFor) + 
+  # labs(tag = 'b', caption = anot.AlbRadFor) + 
+  labs(caption = anot.AlbRadFor) + 
   custom_theme_maps +  
   guides(colour = guide_colourbar(title.position = 'top', title.hjust = 0.5))
 
@@ -546,10 +568,10 @@ g.country <- ggplot(dat.perCountry_4) +
   geom_hline(yintercept = 0, linetype = "solid", colour = 'grey10') +
   coord_polar(theta = "x", direction = -1) +
   geom_label(data = tot.perCountry, size = 3.5,
-             aes(x = 12.5, y = -550,
-                 label = paste('Total mitigation potential:\n', TotalMit, 'Tg CO2 eq.'))) +
+             aes(x = 12.5, y = -450,
+                 label = paste('Total mitigation potential:\n', TotalMit, 'Tg CO2e'))) +
   facet_grid(ccType ~ yr_lbl) +
-  scale_y_continuous('Mitigation potential in Tg CO2 eq.', limits = c(-700, 0)) +
+  scale_y_continuous(limits = c(-700, 100)) +
   scale_x_discrete('') + 
   scale_fill_manual('Type of effect:', 
                     values = effects.cols, 
@@ -557,8 +579,9 @@ g.country <- ggplot(dat.perCountry_4) +
   theme(legend.position = 'top',
         plot.tag = element_text(face = "bold"),
         strip.text = element_text(face = 'bold', size = '12')) +
-  labs(tag = 'c', caption = 'Note: there are insufficient data points for LU, MT, CY and HR.')
-
+  # labs(tag = 'c', caption = 'Note: there are insufficient data points for LU, MT, CY and HR.')
+  labs(caption = 'Note: there are insufficient data points for LU, MT, CY and HR.')+ 
+  ylab(expression("Mitigation potential (Tg CO"[2]*"e ha"^-1*")")) 
 
 
 fname <- 'FigureS7_MutantCCwithSNOW'
@@ -572,10 +595,10 @@ print(g.map.AlbedoChg, vp = viewport(width = 0.5, height = h.t, x = 0.0, y = 1 -
 print(g.map.AlbRadFor, vp = viewport(width = 0.5, height = h.t, x = 0.5, y = 1 - h.t, just=c(0,0)))
 print(g.country, vp = viewport(width = 1, height = 1 - h.t, x = 0.0, y = 0.0, just=c(0,0)))
 
-# grid.text(expression(bold("a")), x = unit(0.03, "npc"), y = unit(0.96, "npc"), gp=gpar(fontsize=18))
-# grid.text(expression(bold("b")), x = unit(0.53, "npc"), y = unit(0.96, "npc"), gp=gpar(fontsize=18))
-# grid.text(expression(bold("c")), x = unit(0.03, "npc"), y = unit(0.46, "npc"), gp=gpar(fontsize=18))
-# grid.text(expression(bold("d")), x = unit(0.53, "npc"), y = unit(0.46, "npc"), gp=gpar(fontsize=18))
+grid.text(expression(bold("a")), x = unit(0.07, "npc"), y = unit(0.95, "npc"), gp=gpar(fontsize=18))
+grid.text(expression(bold("b")), x = unit(0.57, "npc"), y = unit(0.95, "npc"), gp=gpar(fontsize=18))
+grid.text(expression(bold("c")), x = unit(0.10, "npc"), y = unit(0.41, "npc"), gp=gpar(fontsize=18))
+grid.text(expression(bold("d")), x = unit(0.55, "npc"), y = unit(0.41, "npc"), gp=gpar(fontsize=18))
 
 dev.off()
 

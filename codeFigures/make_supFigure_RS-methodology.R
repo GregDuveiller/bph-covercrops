@@ -30,7 +30,6 @@ g.map <- ggplot(europe_laea) + # NOTE: europe_laea should be provided
   geom_sf() +
   geom_sf(data = pts.sub,colour = "red", size = 4)+
   coord_sf(xlim=c(2.5e6,6e6),ylim=c(1e6,4.5e6)) +  
-  labs(tag = 'a') + 
   theme(plot.tag = element_text(face = "bold")) +
   ggtitle('Location of the LUCAS point')
 
@@ -58,7 +57,6 @@ g.rgb <- ggRGB(img = rgbZone, r = 3, g = 2, b = 1,
   geom_sf(data = buf.sub, color = 'red', fill = "transparent") +
   geom_sf(data = pts.sub, color = 'cyan', shape = 3, size = 5) +
   coord_sf(expand = F, ylim = yLimsZone, xlim = xLimsZone) +
-  labs(tag = 'b') + 
   theme(axis.title = element_blank(),
         plot.tag = element_text(face = "bold")) +
   ggtitle('Winter Landsat imagery') 
@@ -73,7 +71,6 @@ g.snr <- ggplot(filter(dat, time == iTime))+
              shape=21,fill='grey80',colour='grey50',size=2)+
   scale_fill_viridis_c(option='C',limits=c(0,70),oob=squish) +
   coord_fixed(xlim = c(2,20), ylim = c(2,20), expand = F) +
-  labs(tag = 'c') + 
   theme(legend.position = 'right',
         legend.key.height = unit(0.5,'in'),
         plot.tag = element_text(face = "bold"),
@@ -119,7 +116,6 @@ g.tsx <- ggplot(datT0)+
   scale_fill_gradientn('', colours = pal, labels = as.Date_origin, limits=TIME_lims)+
   scale_y_continuous('') +
   scale_x_date('') +
-  labs(tag = 'd') +
   theme(legend.position = 'none', 
         legend.key.width = unit(1,'in'),
         plot.tag = element_text(face = "bold")) +
@@ -134,7 +130,6 @@ g.AvN <- ggplot(datf0 %>% filter(time <= timeMax, time > timeMin),
   geom_point(data=filter(datf0, dist == 0,time <= timeMax, time > timeMax-ndays),
              aes(fill=as.integer(time)), shape=21, colour='grey20',size=5)+
   scale_fill_gradientn('Time',colours=pal, labels=as.Date_origin, limits=TIME_lims)+
-  labs(tag = 'e') +
   theme(legend.position = 'none',
         plot.tag = element_text(face = "bold")) +
   ggtitle('Local regression for the LUCAS point') 
@@ -142,7 +137,7 @@ g.AvN <- ggplot(datf0 %>% filter(time <= timeMax, time > timeMin),
 
 
 #### Bring it all together #### 
-fname <- 'FigureS1'
+fname <- 'FigureS1_methodology'
 figW <- 12; figH <- 9; fmt <- 'png'
 fullfname <- paste0(fpath, fname,'.',fmt)
 if(fmt=='png'){png(fullfname, width=figW, height=figH, units = "in", res= 150)}
@@ -152,6 +147,15 @@ print(g.rgb, vp = viewport(width = 0.3, height = 0.4, x = 0.3, y = 0.6, just=c(0
 print(g.snr, vp = viewport(width = 0.4, height = 0.4, x = 0.6, y = 0.6, just=c(0,0)))
 print(g.tsx, vp = viewport(width = 0.5, height = 0.6, x = 0.0, y = 0.0, just=c(0,0)))
 print(g.AvN, vp = viewport(width = 0.5, height = 0.6, x = 0.5, y = 0.0, just=c(0,0)))
+
+grid.text(expression(bold("a")), x = unit(0.02, "npc"), y = unit(0.97, "npc"), gp=gpar(fontsize=18))
+grid.text(expression(bold("b")), x = unit(0.33, "npc"), y = unit(0.97, "npc"), gp=gpar(fontsize=18))
+grid.text(expression(bold("c")), x = unit(0.63, "npc"), y = unit(0.97, "npc"), gp=gpar(fontsize=18))
+grid.text(expression(bold("d")), x = unit(0.02, "npc"), y = unit(0.57, "npc"), gp=gpar(fontsize=18))
+grid.text(expression(bold("e")), x = unit(0.02, "npc"), y = unit(0.29, "npc"), gp=gpar(fontsize=18))
+grid.text(expression(bold("f")), x = unit(0.53, "npc"), y = unit(0.57, "npc"), gp=gpar(fontsize=18))
+
+
 dev.off()
 
 
