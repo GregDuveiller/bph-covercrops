@@ -76,13 +76,27 @@ GHGr30 <- ifelse(abs(alfa_dif[,16])/GHGt30>1, 1, abs(alfa_dif[,16])/GHGt30)
 N2O_30 <- N2O_dif[,16]
 CO2_30 <- SOC_dif[,16]
 
+GHGt50 <- abs(SOC_dif[,36]+ N2O_dif[,36])
+GHGr50 <- ifelse(abs(alfa_dif[,36])/GHGt50>1, 1, abs(alfa_dif[,36])/GHGt50)
+N2O_50 <- N2O_dif[,36]
+CO2_50 <- SOC_dif[,36]
+
+GHGt70 <- abs(SOC_dif[,56]+ N2O_dif[,56])
+GHGr70 <- ifelse(abs(alfa_dif[,56])/GHGt70>1, 1, abs(alfa_dif[,56])/GHGt70)
+N2O_70 <- N2O_dif[,56]
+CO2_70 <- SOC_dif[,56]
+
 GHGt00 <- abs(SOC_dif[,86]+ N2O_dif[,86])
 GHGr00 <- ifelse(abs(alfa_dif[,86])/GHGt00>1, 1, abs(alfa_dif[,86])/GHGt00)
 N2O_00 <- N2O_dif[,86]
 CO2_00 <- SOC_dif[,86]
 
 
-GHGsen <- cbind(aLCS[,1:13], GHGt30, GHGr30, GHGt00, GHGr00) 
+GHGsen <- cbind(aLCS[,1:13], 
+                GHGt30, GHGr30, 
+                GHGt50, GHGr50, 
+                GHGt70, GHGr70,
+                GHGt00, GHGr00) 
 
 ################################################################################
 

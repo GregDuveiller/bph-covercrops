@@ -39,13 +39,18 @@ pts_sf_aLCS_1 <- dat$aLCS %>%
   st_transform(laes_prj)
 
 # make sf points for the maps showing projected scenario with normal plants
-GHGsen_1 <- dat$GHGsen %>% 
-  dplyr::rename('2030' = GHGr30, '2100' = GHGr00) %>%
-  dplyr::select('POINT_ID', 'GPS_LAT', 'GPS_LONG', '2030', '2100') %>%
-  dplyr::mutate(ccType = factor('Normal', levels = ccTypes,
-                                labels = ccTypes_lbls)) %>%
-  tidyr::gather(key = 'TimeHorizon', value = 'GHGr', c('2030', '2100')) %>%
-  dplyr::mutate(snow = F)
+
+# wrapper fucntion
+get.GHGsen <- function(ccType, snow_flag){
+  GHGsen_0 <- dat$GHGsen %>% 
+    dplyr::rename('2030' = GHGr30, '2050' = GHGr50, '2070' = GHGr70, '2100' = GHGr00) %>%
+    dplyr::select('POINT_ID', 'GPS_LAT', 'GPS_LONG', '2030', '2050', '2070', '2100') %>%
+    dplyr::mutate(ccType = factor(ccType, levels = ccTypes,
+                                  labels = ccTypes_lbls)) %>%
+    tidyr::gather(key = 'TimeHorizon', value = 'GHGr', c('2030', '2050', '2070', '2100')) %>%
+    dplyr::mutate(snow = snow_flag)
+}
+GHGsen_1 <- get.GHGsen(ccType = 'Normal', snow_flag = F)
 
 # add category of normal plants
 GHGbdg_1 <- dat$GHGbdg %>%  
@@ -91,6 +96,8 @@ get.df <- function(yr = '2100', ccType = 'Normal'){
 # get the needed data for the normal case
 dat.perCountry_1 <- bind_rows(
   get.df(yr = '2030', ccType = 'Normal'),
+  get.df(yr = '2050', ccType = 'Normal'),
+  get.df(yr = '2070', ccType = 'Normal'),
   get.df(yr = '2100', ccType = 'Normal')) %>%
   mutate(snow = F)
 
@@ -101,14 +108,7 @@ load(file = 'dataFigures/data4scen3_brightCC-noSNOW.Rda')
 # (loads a list named 'dat' with several objects 'GHGbdg','GHGsen', 'aLCS', etc)
 
 # make sf points for the maps showing projected scenario with mutant plants
-GHGsen_3 <- dat$GHGsen %>% 
-  dplyr::rename('2030' = GHGr30, '2100' = GHGr00) %>%
-  dplyr::select('POINT_ID', 'GPS_LAT', 'GPS_LONG', '2030', '2100') %>%
-  dplyr::mutate(ccType = factor('Mutant', 
-                                levels = ccTypes,
-                                labels = ccTypes_lbls)) %>%
-  tidyr::gather(key = 'TimeHorizon', value = 'GHGr', c('2030', '2100')) %>%
-  mutate(snow = F)
+GHGsen_3 <- get.GHGsen(ccType = 'Mutant', snow_flag = F)
 
 # add category of mutant plants
 GHGbdg_3 <- dat$GHGbdg %>% 
@@ -118,10 +118,10 @@ GHGbdg_3 <- dat$GHGbdg %>%
 # get the needed data for the normal case
 dat.perCountry_3 <- bind_rows(
   get.df(yr = '2030', ccType = 'Mutant'),
+  get.df(yr = '2050', ccType = 'Mutant'),
+  get.df(yr = '2070', ccType = 'Mutant'),
   get.df(yr = '2100', ccType = 'Mutant')) %>%
   mutate(snow = F)
-
-
 
 
 ### load second dataset, with normal plants + snow ----
@@ -136,13 +136,7 @@ pts_sf_aLCS_2 <- dat$aLCS %>%
   st_transform(laes_prj)
 
 # make sf points for the maps showing projected scenario with normal plants
-GHGsen_2 <- dat$GHGsen %>% 
-  dplyr::rename('2030' = GHGr30, '2100' = GHGr00) %>%
-  dplyr::select('POINT_ID', 'GPS_LAT', 'GPS_LONG', '2030', '2100') %>%
-  dplyr::mutate(ccType = factor('Normal', levels = ccTypes,
-                                labels = ccTypes_lbls)) %>%
-  tidyr::gather(key = 'TimeHorizon', value = 'GHGr', c('2030', '2100')) %>%
-  dplyr::mutate(snow = T)
+GHGsen_2 <- get.GHGsen(ccType = 'Normal', snow_flag = T)
 
 # add category for normal plant + snow
 GHGbdg_2 <- dat$GHGbdg %>%  
@@ -152,6 +146,8 @@ GHGbdg_2 <- dat$GHGbdg %>%
 # get the needed data for the normal case
 dat.perCountry_2 <- bind_rows(
   get.df(yr = '2030', ccType = 'Normal'),
+  get.df(yr = '2050', ccType = 'Normal'),
+  get.df(yr = '2070', ccType = 'Normal'),
   get.df(yr = '2100', ccType = 'Normal')) %>%
   mutate(snow = T)
 
@@ -170,14 +166,7 @@ pts_sf_aLCS_4 <- dat$aLCS %>%
 
 
 # make sf points for the maps showing projected scenario with mutant plants + snow
-GHGsen_4 <- dat$GHGsen %>% 
-  dplyr::rename('2030' = GHGr30, '2100' = GHGr00) %>%
-  dplyr::select('POINT_ID', 'GPS_LAT', 'GPS_LONG', '2030', '2100') %>%
-  dplyr::mutate(ccType = factor('Mutant', 
-                                levels = ccTypes,
-                                labels = ccTypes_lbls)) %>%
-  tidyr::gather(key = 'TimeHorizon', value = 'GHGr', c('2030', '2100')) %>%
-  mutate(snow = T)
+GHGsen_4 <- get.GHGsen(ccType = 'Mutant', snow_flag = T)
 
 
 # add category of mutant plants + snow
@@ -188,6 +177,8 @@ GHGbdg_4 <- dat$GHGbdg %>%
 # get the needed data for the normal case
 dat.perCountry_4 <- bind_rows(
   get.df(yr = '2030', ccType = 'Mutant'),
+  get.df(yr = '2050', ccType = 'Mutant'),
+  get.df(yr = '2070', ccType = 'Mutant'),
   get.df(yr = '2100', ccType = 'Mutant')) %>%
   mutate(snow = T)
 
@@ -197,7 +188,21 @@ dat.perCountry_4 <- bind_rows(
 
 ### combine datasets... -----
 
-GHGbdg <- bind_rows(GHGbdg_1, GHGbdg_3, GHGbdg_2, GHGbdg_4)
+GHGbdg_bgc <- bind_rows(
+  GHGbdg_1 %>% select(-snow) %>% filter(scenarios %in% c('CO2_soil', 'N2O_dir')),
+  GHGbdg_3 %>% select(-snow) %>% filter(scenarios %in% c('CO2_soil', 'N2O_dir')))
+
+GHGbdg_bph <- bind_rows(
+  GHGbdg_1 %>% filter(scenarios == 'albedo') %>% 
+    unite(col = scenarios, scenarios, snow, sep = '_snow'),
+  GHGbdg_3 %>% filter(scenarios == 'albedo') %>% 
+    unite(col = scenarios, scenarios, snow, sep = '_snow'), 
+  GHGbdg_2 %>% filter(scenarios == 'albedo') %>% 
+    unite(col = scenarios, scenarios, snow, sep = '_snow'), 
+  GHGbdg_4 %>% filter(scenarios == 'albedo') %>% 
+    unite(col = scenarios, scenarios, snow, sep = '_snow'))
+
+GHGbdg <- bind_rows(GHGbdg_bgc, GHGbdg_bph) 
 
 pts_sf_GHGsen <- bind_rows(GHGsen_1, GHGsen_3, GHGsen_2, GHGsen_4) %>%
   st_as_sf(coords = c("GPS_LONG","GPS_LAT")) %>%
@@ -326,36 +331,40 @@ dev.off()
 
 #### FIG 2 #### ----
 
-snow_flag <- F
+year_flag <- 2050
 
 scen.cols <- c('CO2_soil' = 'firebrick3',   # 'tan4', 
                'N2O_dir' ='goldenrod',         # 'goldenrod', 
-               'albedo' = 'cornflowerblue')
+               'albedo_snowTRUE' = 'cornflowerblue',
+               'albedo_snowFALSE' = 'darkblue')
 scen.lbls <- c('CO2_soil' = bquote('CO'[2]), 
                'N2O_dir' = bquote('N'[2]*'O'), 
-               'albedo' = 'Albedo')
+               'albedo_snowTRUE' = 'Albedo with snow',
+               'albedo_snowFALSE' = 'Albedo without snow')
 
 lab <- expression(Delta* "Soil fluxes (Mg CO"[2]*"e ha"^-1*")")   ##labels
 
 # add dummy title on top for projections
 GHGbdg$Simulation <- 'Projected temporal trends'
 
-g.futprojection <- ggplot(GHGbdg %>% filter(snow == snow_flag),
-                          aes(x = year, y = dSOC, 
-                                      colour = scenarios, fill = scenarios)) + 
+g.futprojection <- ggplot(GHGbdg, aes(x = year, y = dSOC, colour = scenarios)) + 
   geom_line(size = 1) + 
-  geom_ribbon(aes(ymin = dSOC_2q, ymax = dSOC_1q), linetype = 0, alpha = 0.2) +
+  geom_ribbon(aes(ymin = dSOC_2q, ymax = dSOC_1q, fill = scenarios), 
+              linetype = 0, alpha = 0.2) +
   facet_grid(ccType~Simulation) +
-  scale_y_continuous(lab, limits = c(-30, 20)) +
+  scale_y_continuous(lab) +
+  scale_x_continuous(expand = c(0,0)) +
   scale_fill_manual('', values = scen.cols, labels = scen.lbls) +
   scale_color_manual('', values = scen.cols, labels = scen.lbls) +
   geom_hline(yintercept = 0, linetype = "solid", colour = 'grey10') +
-  geom_vline(xintercept = 2030, linetype = "dashed", colour = 'grey50') +
-  geom_vline(xintercept = 2100, linetype = "dashed", colour = 'grey50') +
+  geom_vline(xintercept = year_flag, linetype = "dashed", colour = 'grey50') +
+  coord_cartesian(ylim = c(-23, 10)) +
   # labs(tag = 'a') +
-  theme(legend.position = c(0.78,0.92),
+  theme(legend.position = c(0.15,0.10),
+        legend.title = element_blank(),
+        legend.background = element_rect(fill = 'white', colour = 'gray40'),
         #axis.line = element_line(colour = 'gray20'),
-        axis.ticks = element_line(colour = 'gray20'),
+        axis.ticks = element_line(colour = 'gray40'),
         axis.title.x = element_blank(),
         panel.border = element_rect (fill = 'NA', colour = 'gray20'),
         panel.background = element_rect (fill = 'white'),
@@ -365,8 +374,8 @@ g.futprojection <- ggplot(GHGbdg %>% filter(snow == snow_flag),
         plot.tag = element_text(face = "bold"))
 
 pts_sf_GHGsen$TimeHorizonLbl <- paste('Spatial distribution for time horizon:', pts_sf_GHGsen$TimeHorizon)
-
-g.map.AlbRelImp <- ggplot(pts_sf_GHGsen %>% filter(snow == snow_flag)) + 
+pts_sf_GHGsen$snow <- factor(pts_sf_GHGsen$snow, levels = c(TRUE, FALSE), labels = c('With snow', 'Without snow'))
+g.map.AlbRelImp <- ggplot(pts_sf_GHGsen %>% filter(TimeHorizon == year_flag)) + 
   geom_sf(data = europe_laea, fill = landColor) +
   geom_sf(aes(colour = GHGr), size = pointSize) +
   # geom_point(aes(colour = GHGr, 
@@ -377,7 +386,7 @@ g.map.AlbRelImp <- ggplot(pts_sf_GHGsen %>% filter(snow == snow_flag)) +
                          limits = c(0, 1),
                          option = 'plasma', 
                          oob = squish) +
-  facet_grid(ccType ~ TimeHorizonLbl) +
+  facet_grid(ccType ~ snow) +
   coord_sf(xlim = xLims, ylim = yLims) +
   # labs(tag = 'b') +
   theme(legend.position = 'right',
@@ -389,7 +398,7 @@ g.map.AlbRelImp <- ggplot(pts_sf_GHGsen %>% filter(snow == snow_flag)) +
 
 
 
-fname <- 'Figure2_Projections'; if(snow_flag == T){ fname <- paste0(fname + '_snow')}
+fname <- 'Figure2_Projections'
 figW <- 15; figH <- 8; fmt <- 'png'
 fullfname <- paste0(fpath, fname, '.', fmt)
 if(fmt=='png'){png(fullfname, width = figW, height = figH, units = "in", res= 150)}
@@ -412,7 +421,7 @@ dev.off()
 
 
 #### FIG 3 #### ----
-
+snow_flag <- FALSE
 effects.cols <- c('BGC' = 'coral', 
                   'BPH' = 'cornflowerblue')
 effects.lbls <- c('BGC' = bquote('Biogeochemical (CO'[2]*'+ N'[2]*'O)'), 
@@ -421,11 +430,13 @@ effects.lbls <- c('BGC' = bquote('Biogeochemical (CO'[2]*'+ N'[2]*'O)'),
 dat.perCountry$yr_lbl <- paste('Time horizon:', dat.perCountry$yr)
 
 tot.perCountry <- dat.perCountry %>% 
+  filter(snow == snow_flag, yr %in% c('2030', '2100')) %>% 
   group_by(ccType, yr_lbl) %>% 
   summarise(TotalMit = round(sum(CO2.eq), digits = 0)) %>%
   mutate(x = 12.5, y = -550)
 
-g.country <- ggplot(dat.perCountry) +
+g.country <- ggplot(dat.perCountry %>% 
+                      filter(snow == snow_flag, yr %in% c('2030', '2100'))) +
   geom_bar(aes(x = reorder(Country, Area_Mha), y = CO2.eq, fill = Type),
           stat = 'identity', position = 'stack') +
   geom_hline(yintercept = 0, linetype = "solid", colour = 'grey10') +
@@ -506,15 +517,15 @@ g.map.AlbRadFor <- ggplot(pts_sf_aLCS_2) +
 
 
 
-
-
 dat.perCountry_2$yr_lbl <- paste('Time horizon:', dat.perCountry_2$yr)
 
 tot.perCountry <- dat.perCountry_2 %>% 
+  filter(yr %in% c('2030', '2100')) %>% 
   group_by(ccType, yr_lbl) %>% 
   summarise(TotalMit = round(sum(CO2.eq), digits = 0))
 
-g.country <- ggplot(dat.perCountry_2) +
+g.country <- ggplot(dat.perCountry_2 %>% 
+                      filter(yr %in% c('2030', '2100'))) +
   geom_bar(aes(x = reorder(Country, Area_Mha), y = CO2.eq, fill = Type), 
            stat = 'identity', position = 'stack') + 
   geom_hline(yintercept = 0, linetype = "solid", colour = 'grey10') +
@@ -578,10 +589,6 @@ g.map.AlbedoChg <- ggplot(pts_sf_aLCS_4) +
   guides(colour = guide_colourbar(title.position = 'top', title.hjust = 0.5))
 
 
-
-
-
-
 anot.AlbRadFor <- bquote(mu(sigma) == .(round(mean(pts_sf_aLCS_4$RFa_Wm2,
                                                    na.rm = TRUE),4)) 
                          %+-% .(round(sd(pts_sf_aLCS_4$RFa_Wm2, na.rm = TRUE), 4)))
@@ -606,10 +613,12 @@ g.map.AlbRadFor <- ggplot(pts_sf_aLCS_4) +
 dat.perCountry_4$yr_lbl <- paste('Time horizon:', dat.perCountry_4$yr)
 
 tot.perCountry <- dat.perCountry_4 %>% 
+  filter(yr %in% c('2030', '2100')) %>%
   group_by(ccType, yr_lbl) %>% 
   summarise(TotalMit = round(sum(CO2.eq), digits = 0))
 
-g.country <- ggplot(dat.perCountry_4) +
+g.country <- ggplot(dat.perCountry_4 %>%
+                      filter(yr %in% c('2030', '2100'))) +
   geom_bar(aes(x = reorder(Country, Area_Mha), y = CO2.eq, fill = Type), 
            stat = 'identity', position = 'stack') + 
   geom_hline(yintercept = 0, linetype = "solid", colour = 'grey10') +
