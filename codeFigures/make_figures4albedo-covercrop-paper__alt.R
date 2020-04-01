@@ -220,178 +220,178 @@ dat.perCountry <- bind_rows(dat.perCountry_1, dat.perCountry_3,
 ################################################################################
 #### Figures #### ----
 
-
-# set parameters for plots
-pointSize <- 0.2
-landColor <- 'grey60'
-xLims <- c(2.5e6,6e6)
-yLims <- c(1.5e6,4.5e6)
-
-custom_theme_maps <- theme(legend.position = 'top',
-                           legend.key.width = unit(0.8,'in'),
-                           plot.tag = element_text(face = "bold"))
-
-#### FIG 1 #### ----
-
-
-# anot.TransSWin <- bquote(mu(sigma) == .(round(mean(pts_sf_aLCS_1$SWin_Ta_Wm2, na.rm=TRUE),4))
-#                          %+-% .(round(sd(pts_sf_aLCS_1$SWin_Ta_Wm2, na.rm=TRUE),4)))
-# 
-# g.map.TransSWin <- ggplot(pts_sf_aLCS_1) + 
-#   geom_sf(data = europe_laea, fill = landColor) +
-#   geom_sf(aes(colour = SWin_Ta_Wm2), size = pointSize) +
-#   scale_colour_viridis_c("Ta * SWin",
-#                          limits = c(40,120), 
-#                          option = "magma",
-#                          oob = squish)+
-#   coord_sf(xlim = xLims, ylim = yLims) +
-#   # labs(tag = 'a', caption = anot.TransSWin) + 
-#   labs(caption = anot.TransSWin) + 
-#   custom_theme_maps +  
-#   #geom_text(data = data.frame(x = 2.9e6, y = 4.4e6, label = anot)) +
-#   #annotate(geom = "text", x = 2.9e6, y = 4.4e6, label = anot) +
-#   #annotate(geom = "label", x = 2.9e6, y = 4.4e6, label = anot) +
-#   guides(colour = guide_colourbar(title.position = 'top', title.hjust = 0.5))
-
-
-# SNOW FREE
-
-anot.BareSoilA1 <- bquote(mu(sigma) == .(round(mean(pts_sf_aLCS_1$BareSoil.Albedo, na.rm=TRUE),4)) 
-                         %+-% .(round(sd(pts_sf_aLCS_1$BareSoil.Albedo, na.rm=TRUE),4)))
-
-g.map.BareSoilA1 <- ggplot(pts_sf_aLCS_1) + 
-  geom_sf(data = europe_laea, fill = landColor)+
-  geom_sf(aes(colour = BareSoil.Albedo), size = pointSize)+
-  scale_colour_viridis_c("Bare soil albedo (snow free)",
-                         limits = c(0.05,0.25), 
-                         option = "viridis", 
-                         oob = squish)+
-  coord_sf(xlim = xLims, ylim = yLims) +
-  # labs(tag = 'b', caption = anot.BareSoilA) + 
-  labs(caption = anot.BareSoilA1) + 
-  custom_theme_maps +  
-  guides(colour = guide_colourbar(title.position = 'top', title.hjust = 0.5))
-
-
-anot.AlbedoChg1 <- bquote(mu(sigma) == .(round(mean(pts_sf_aLCS_1$a_dif, na.rm=TRUE),4)) 
-                         %+-% .(round(sd(pts_sf_aLCS_1$a_dif, na.rm=TRUE),4)))
-
-g.map.AlbedoChg1 <- ggplot(pts_sf_aLCS_1) + 
-  geom_sf(data = europe_laea, fill = landColor)+
-  geom_sf(aes(colour = a_dif), size = pointSize)+
-  scale_colour_gradientn("Albedo change (snow free)",
-                         limits = c(-0.01,0.01), 
-                         colors = brewer.pal(9,'PiYG'), 
-                         oob = squish)+
-  coord_sf(xlim = xLims, ylim = yLims) +
-  # labs(tag = 'c', caption = anot.AlbedoChg) + 
-  labs(caption = anot.AlbedoChg1) + 
-  custom_theme_maps +  
-  guides(colour = guide_colourbar(title.position = 'top', title.hjust = 0.5))
-
-
-anot.AlbRadFor1 <- bquote(mu(sigma) == .(round(mean(pts_sf_aLCS_1$RFa_Wm2,
-                                                   na.rm = TRUE),4)) 
-                         %+-% .(round(sd(pts_sf_aLCS_1$RFa_Wm2, na.rm = TRUE), 4)))
-
-g.map.AlbRadFor1 <- ggplot(pts_sf_aLCS_1) + 
-  geom_sf(data = europe_laea, fill = landColor)+
-  geom_sf(aes(colour = RFa_Wm2), size = pointSize)+
-  scale_colour_gradientn("Albedo radiative forcing (snow free)",
-                         limits = c(-0.5,0.5), 
-                         colors = brewer.pal(9,'RdBu'), 
-                         oob = squish)+
-  coord_sf(xlim = xLims, ylim = yLims) +
-  # labs(tag = 'd', caption = anot.AlbRadFor) + 
-  labs(caption = anot.AlbRadFor1) + 
-  custom_theme_maps +  
-  guides(colour = guide_colourbar(title.position = 'top', title.hjust = 0.5))
-
-
-# WITH SNOW
-
-anot.BareSoilA2 <- bquote(mu(sigma) == .(round(mean(pts_sf_aLCS_2$BareSoil.Albedo, na.rm=TRUE),4)) 
-                         %+-% .(round(sd(pts_sf_aLCS_2$BareSoil.Albedo, na.rm=TRUE),4)))
-
-g.map.BareSoilA2 <- ggplot(pts_sf_aLCS_2) + 
-  geom_sf(data = europe_laea, fill = landColor)+
-  geom_sf(aes(colour = BareSoil.Albedo), size = pointSize)+
-  scale_colour_viridis_c("Bare soil albedo (with snow)",
-                         limits = c(0.05,0.25), 
-                         option = "viridis", 
-                         oob = squish)+
-  coord_sf(xlim = xLims, ylim = yLims) +
-  # labs(tag = 'b', caption = anot.BareSoilA) + 
-  labs(caption = anot.BareSoilA2) + 
-  custom_theme_maps +  
-  guides(colour = guide_colourbar(title.position = 'top', title.hjust = 0.5))
-
-
-anot.AlbedoChg2 <- bquote(mu(sigma) == .(round(mean(pts_sf_aLCS_2$a_dif, na.rm=TRUE),4)) 
-                         %+-% .(round(sd(pts_sf_aLCS_2$a_dif, na.rm=TRUE),4)))
-
-g.map.AlbedoChg2 <- ggplot(pts_sf_aLCS_2) + 
-  geom_sf(data = europe_laea, fill = landColor)+
-  geom_sf(aes(colour = a_dif), size = pointSize)+
-  scale_colour_gradientn("Albedo change (with snow)",
-                         limits = c(-0.01,0.01), 
-                         colors = brewer.pal(9,'PiYG'), 
-                         oob = squish)+
-  coord_sf(xlim = xLims, ylim = yLims) +
-  # labs(tag = 'c', caption = anot.AlbedoChg) + 
-  labs(caption = anot.AlbedoChg2) + 
-  custom_theme_maps +  
-  guides(colour = guide_colourbar(title.position = 'top', title.hjust = 0.5))
-
-
-anot.AlbRadFor2 <- bquote(mu(sigma) == .(round(mean(pts_sf_aLCS_2$RFa_Wm2,
-                                                   na.rm = TRUE),4)) 
-                         %+-% .(round(sd(pts_sf_aLCS_2$RFa_Wm2, na.rm = TRUE), 4)))
-
-g.map.AlbRadFor2 <- ggplot(pts_sf_aLCS_2) + 
-  geom_sf(data = europe_laea, fill = landColor)+
-  geom_sf(aes(colour = RFa_Wm2), size = pointSize)+
-  scale_colour_gradientn("Albedo radiative forcing (with snow)",
-                         limits = c(-0.5,0.5), 
-                         colors = brewer.pal(9,'RdBu'), 
-                         oob = squish)+
-  coord_sf(xlim = xLims, ylim = yLims) +
-  # labs(tag = 'd', caption = anot.AlbRadFor) + 
-  labs(caption = anot.AlbRadFor2) + 
-  custom_theme_maps +  
-  guides(colour = guide_colourbar(title.position = 'top', title.hjust = 0.5))
-
-
-
-
-
-fname <- 'Figure1_Bph-effect'
-figW <- 10; figH <- 16; fmt <- 'png'
-fullfname <- paste0(fpath, fname, '.', fmt)
-if(fmt=='png'){png(fullfname, width = figW, height = figH, units = "in", res= 150)}
-if(fmt=='pdf'){pdf(fullfname, width = figW, height = figH)}
-
-w1 <- 0.5; w2 <- 0.5; h <- 0.33
-
-print(g.map.BareSoilA2, vp = viewport(width = w1, height = h, x = 0.0, y = 2*h, just=c(0,0)))
-print(g.map.AlbedoChg2, vp = viewport(width = w1, height = h, x = 0.0, y = 1*h, just=c(0,0)))
-print(g.map.AlbRadFor2, vp = viewport(width = w1, height = h, x = 0.0, y = 0*h, just=c(0,0)))
-
-print(g.map.BareSoilA1, vp = viewport(width = w2, height = h, x = 0.5, y = 2*h, just=c(0,0)))
-print(g.map.AlbedoChg1, vp = viewport(width = w2, height = h, x = 0.5, y = 1*h, just=c(0,0)))
-print(g.map.AlbRadFor1, vp = viewport(width = w2, height = h, x = 0.5, y = 0*h, just=c(0,0)))
-
-grid.text(expression(bold("a")), x = unit(0.04, "npc"), y = unit(0.97, "npc"), gp=gpar(fontsize=18))
-grid.text(expression(bold("b")), x = unit(0.54, "npc"), y = unit(0.97, "npc"), gp=gpar(fontsize=18))
-grid.text(expression(bold("c")), x = unit(0.04, "npc"), y = unit(0.64, "npc"), gp=gpar(fontsize=18))
-grid.text(expression(bold("d")), x = unit(0.54, "npc"), y = unit(0.64, "npc"), gp=gpar(fontsize=18))
-grid.text(expression(bold("e")), x = unit(0.04, "npc"), y = unit(0.31, "npc"), gp=gpar(fontsize=18))
-grid.text(expression(bold("f")), x = unit(0.54, "npc"), y = unit(0.31, "npc"), gp=gpar(fontsize=18))
-
-dev.off()
-
-
-
+  
+  # set parameters for plots
+  pointSize <- 0.2
+  landColor <- 'grey60'
+  xLims <- c(2.5e6,6e6)
+  yLims <- c(1.5e6,4.5e6)
+  
+  custom_theme_maps <- theme(legend.position = 'top',
+                             legend.key.width = unit(0.8,'in'),
+                             plot.tag = element_text(face = "bold"))
+  
+  #### FIG 1 #### ----
+  
+  
+  # anot.TransSWin <- bquote(mu(sigma) == .(round(mean(pts_sf_aLCS_1$SWin_Ta_Wm2, na.rm=TRUE),4))
+  #                          %+-% .(round(sd(pts_sf_aLCS_1$SWin_Ta_Wm2, na.rm=TRUE),4)))
+  # 
+  # g.map.TransSWin <- ggplot(pts_sf_aLCS_1) + 
+  #   geom_sf(data = europe_laea, fill = landColor) +
+  #   geom_sf(aes(colour = SWin_Ta_Wm2), size = pointSize) +
+  #   scale_colour_viridis_c("Ta * SWin",
+  #                          limits = c(40,120), 
+  #                          option = "magma",
+  #                          oob = squish)+
+  #   coord_sf(xlim = xLims, ylim = yLims) +
+  #   # labs(tag = 'a', caption = anot.TransSWin) + 
+  #   labs(caption = anot.TransSWin) + 
+  #   custom_theme_maps +  
+  #   #geom_text(data = data.frame(x = 2.9e6, y = 4.4e6, label = anot)) +
+  #   #annotate(geom = "text", x = 2.9e6, y = 4.4e6, label = anot) +
+  #   #annotate(geom = "label", x = 2.9e6, y = 4.4e6, label = anot) +
+  #   guides(colour = guide_colourbar(title.position = 'top', title.hjust = 0.5))
+  
+  
+  # SNOW FREE
+  
+  anot.BareSoilA1 <- bquote(mu(sigma) == .(round(mean(pts_sf_aLCS_1$BareSoil.Albedo, na.rm=TRUE),4)) 
+                           %+-% .(round(sd(pts_sf_aLCS_1$BareSoil.Albedo, na.rm=TRUE),4)))
+  
+  g.map.BareSoilA1 <- ggplot(pts_sf_aLCS_1) + 
+    geom_sf(data = europe_laea, fill = landColor)+
+    geom_sf(aes(colour = BareSoil.Albedo), size = pointSize)+
+    scale_colour_viridis_c("Bare soil albedo (snow free)",
+                           limits = c(0.05,0.25), 
+                           option = "viridis", 
+                           oob = squish)+
+    coord_sf(xlim = xLims, ylim = yLims) +
+    # labs(tag = 'b', caption = anot.BareSoilA) + 
+    labs(caption = anot.BareSoilA1) + 
+    custom_theme_maps +  
+    guides(colour = guide_colourbar(title.position = 'top', title.hjust = 0.5))
+  
+  
+  anot.AlbedoChg1 <- bquote(mu(sigma) == .(round(mean(pts_sf_aLCS_1$a_dif, na.rm=TRUE),4)) 
+                           %+-% .(round(sd(pts_sf_aLCS_1$a_dif, na.rm=TRUE),4)))
+  
+  g.map.AlbedoChg1 <- ggplot(pts_sf_aLCS_1) + 
+    geom_sf(data = europe_laea, fill = landColor)+
+    geom_sf(aes(colour = a_dif), size = pointSize)+
+    scale_colour_gradientn("Albedo change (snow free)",
+                           limits = c(-0.01,0.01), 
+                           colors = brewer.pal(9,'PiYG'), 
+                           oob = squish)+
+    coord_sf(xlim = xLims, ylim = yLims) +
+    # labs(tag = 'c', caption = anot.AlbedoChg) + 
+    labs(caption = anot.AlbedoChg1) + 
+    custom_theme_maps +  
+    guides(colour = guide_colourbar(title.position = 'top', title.hjust = 0.5))
+  
+  
+  anot.AlbRadFor1 <- bquote(mu(sigma) == .(round(mean(pts_sf_aLCS_1$RFa_Wm2,
+                                                     na.rm = TRUE),4)) 
+                           %+-% .(round(sd(pts_sf_aLCS_1$RFa_Wm2, na.rm = TRUE), 4)))
+  
+  g.map.AlbRadFor1 <- ggplot(pts_sf_aLCS_1) + 
+    geom_sf(data = europe_laea, fill = landColor)+
+    geom_sf(aes(colour = RFa_Wm2), size = pointSize)+
+    scale_colour_gradientn("Albedo radiative forcing (snow free)",
+                           limits = c(-0.5,0.5), 
+                           colors = brewer.pal(9,'RdBu'), 
+                           oob = squish)+
+    coord_sf(xlim = xLims, ylim = yLims) +
+    # labs(tag = 'd', caption = anot.AlbRadFor) + 
+    labs(caption = anot.AlbRadFor1) + 
+    custom_theme_maps +  
+    guides(colour = guide_colourbar(title.position = 'top', title.hjust = 0.5))
+  
+  
+  # WITH SNOW
+  
+  anot.SnowCover2 <- bquote(mu(sigma) == .(round(mean(pts_sf_aLCS_2$snowDJF, na.rm=TRUE),4)) 
+                           %+-% .(round(sd(pts_sf_aLCS_2$snowDJF, na.rm=TRUE),4)))
+  
+  g.map.SnowCover2 <- ggplot(pts_sf_aLCS_2) + 
+    geom_sf(data = europe_laea, fill = landColor)+
+    geom_sf(aes(colour = snowDJF), size = pointSize)+
+    scale_colour_viridis_c("Snow in DJF",
+                           limits = c(0,5), 
+                           option = "magma", 
+                           oob = squish)+
+    coord_sf(xlim = xLims, ylim = yLims) +
+    # labs(tag = 'b', caption = anot.BareSoilA) + 
+    labs(caption = anot.SnowCover2) + 
+    custom_theme_maps +  
+    guides(colour = guide_colourbar(title.position = 'top', title.hjust = 0.5))
+  
+  
+  anot.AlbedoChg2 <- bquote(mu(sigma) == .(round(mean(pts_sf_aLCS_2$a_dif, na.rm=TRUE),4)) 
+                           %+-% .(round(sd(pts_sf_aLCS_2$a_dif, na.rm=TRUE),4)))
+  
+  g.map.AlbedoChg2 <- ggplot(pts_sf_aLCS_2) + 
+    geom_sf(data = europe_laea, fill = landColor)+
+    geom_sf(aes(colour = a_dif), size = pointSize)+
+    scale_colour_gradientn("Albedo change (with snow)",
+                           limits = c(-0.01,0.01), 
+                           colors = brewer.pal(9,'PiYG'), 
+                           oob = squish)+
+    coord_sf(xlim = xLims, ylim = yLims) +
+    # labs(tag = 'c', caption = anot.AlbedoChg) + 
+    labs(caption = anot.AlbedoChg2) + 
+    custom_theme_maps +  
+    guides(colour = guide_colourbar(title.position = 'top', title.hjust = 0.5))
+  
+  
+  anot.AlbRadFor2 <- bquote(mu(sigma) == .(round(mean(pts_sf_aLCS_2$RFa_Wm2,
+                                                     na.rm = TRUE),4)) 
+                           %+-% .(round(sd(pts_sf_aLCS_2$RFa_Wm2, na.rm = TRUE), 4)))
+  
+  g.map.AlbRadFor2 <- ggplot(pts_sf_aLCS_2) + 
+    geom_sf(data = europe_laea, fill = landColor)+
+    geom_sf(aes(colour = RFa_Wm2), size = pointSize)+
+    scale_colour_gradientn("Albedo radiative forcing (with snow)",
+                           limits = c(-0.5,0.5), 
+                           colors = brewer.pal(9,'RdBu'), 
+                           oob = squish)+
+    coord_sf(xlim = xLims, ylim = yLims) +
+    # labs(tag = 'd', caption = anot.AlbRadFor) + 
+    labs(caption = anot.AlbRadFor2) + 
+    custom_theme_maps +  
+    guides(colour = guide_colourbar(title.position = 'top', title.hjust = 0.5))
+  
+  
+  
+  
+  
+  fname <- 'Figure1_Bph-effect'
+  figW <- 10; figH <- 16; fmt <- 'png'
+  fullfname <- paste0(fpath, fname, '.', fmt)
+  if(fmt=='png'){png(fullfname, width = figW, height = figH, units = "in", res= 150)}
+  if(fmt=='pdf'){pdf(fullfname, width = figW, height = figH)}
+  
+  w1 <- 0.5; w2 <- 0.5; h <- 0.33
+  
+  print(g.map.SnowCover2, vp = viewport(width = w1, height = h, x = 0.0, y = 2*h, just=c(0,0)))
+  print(g.map.AlbedoChg2, vp = viewport(width = w1, height = h, x = 0.0, y = 1*h, just=c(0,0)))
+  print(g.map.AlbRadFor2, vp = viewport(width = w1, height = h, x = 0.0, y = 0*h, just=c(0,0)))
+  
+  print(g.map.BareSoilA1, vp = viewport(width = w2, height = h, x = 0.5, y = 2*h, just=c(0,0)))
+  print(g.map.AlbedoChg1, vp = viewport(width = w2, height = h, x = 0.5, y = 1*h, just=c(0,0)))
+  print(g.map.AlbRadFor1, vp = viewport(width = w2, height = h, x = 0.5, y = 0*h, just=c(0,0)))
+  
+  grid.text(expression(bold("a")), x = unit(0.04, "npc"), y = unit(0.97, "npc"), gp=gpar(fontsize=18))
+  grid.text(expression(bold("b")), x = unit(0.54, "npc"), y = unit(0.97, "npc"), gp=gpar(fontsize=18))
+  grid.text(expression(bold("c")), x = unit(0.04, "npc"), y = unit(0.64, "npc"), gp=gpar(fontsize=18))
+  grid.text(expression(bold("d")), x = unit(0.54, "npc"), y = unit(0.64, "npc"), gp=gpar(fontsize=18))
+  grid.text(expression(bold("e")), x = unit(0.04, "npc"), y = unit(0.31, "npc"), gp=gpar(fontsize=18))
+  grid.text(expression(bold("f")), x = unit(0.54, "npc"), y = unit(0.31, "npc"), gp=gpar(fontsize=18))
+  
+  dev.off()
+  
+  
+  
 
 # print(g.map.TransSWin, vp = viewport(width = 0.5, height = 0.5, x = 0.0, y = 0.5, just=c(0,0)))
 # print(g.map.BareSoilA, vp = viewport(width = 0.5, height = 0.5, x = 0.5, y = 0.5, just=c(0,0)))
