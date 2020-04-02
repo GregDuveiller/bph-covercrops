@@ -221,17 +221,17 @@ dat.perCountry <- bind_rows(dat.perCountry_1, dat.perCountry_3,
 #### Figures #### ----
 
   
-  # set parameters for plots
-  pointSize <- 0.2
-  landColor <- 'grey60'
-  xLims <- c(2.5e6,6e6)
-  yLims <- c(1.5e6,4.5e6)
+# set parameters for plots
+pointSize <- 0.2
+landColor <- 'grey60'
+xLims <- c(2.5e6,6e6)
+yLims <- c(1.5e6,4.5e6)
   
-  custom_theme_maps <- theme(legend.position = 'top',
-                             legend.key.width = unit(0.8,'in'),
-                             plot.tag = element_text(face = "bold"))
+custom_theme_maps <- theme(legend.position = 'top',
+                           legend.key.width = unit(0.8,'in'),
+                           plot.tag = element_text(face = "bold"))
   
-  #### FIG 1 #### ----
+#### FIG 1 #### ----
   
   
   # anot.TransSWin <- bquote(mu(sigma) == .(round(mean(pts_sf_aLCS_1$SWin_Ta_Wm2, na.rm=TRUE),4))
@@ -316,7 +316,7 @@ dat.perCountry <- bind_rows(dat.perCountry_1, dat.perCountry_3,
   g.map.SnowCover2 <- ggplot(pts_sf_aLCS_2) + 
     geom_sf(data = europe_laea, fill = landColor)+
     geom_sf(aes(colour = snowDJF), size = pointSize)+
-    scale_colour_viridis_c("Snow in DJF",
+    scale_colour_viridis_c("Mean snow water equivalent during DJF [cm]",
                            limits = c(0,5), 
                            option = "magma", 
                            oob = squish)+
@@ -428,7 +428,7 @@ lab <- expression(Delta* "Soil fluxes (Mg CO"[2]*"e ha"^-1*")")   ##labels
 GHGbdg$Simulation <- 'Projected temporal trends'
 
 g.futprojection <- ggplot(GHGbdg, aes(x = year, y = dSOC, colour = scenarios)) + 
-  geom_line(aes(linetype = scenarios), size = 1) + 
+  geom_line(aes(linetype = scenarios), size = 0.7) + 
   geom_ribbon(aes(ymin = dSOC_2q, ymax = dSOC_1q, fill = scenarios), 
               linetype = 0, alpha = 0.2) +
   facet_grid(ccType~Simulation) +
@@ -441,7 +441,7 @@ g.futprojection <- ggplot(GHGbdg, aes(x = year, y = dSOC, colour = scenarios)) +
   geom_vline(xintercept = year_flag, linetype = "dashed", colour = 'grey50') +
   coord_cartesian(ylim = c(-23, 10)) +
   # labs(tag = 'a') +
-  theme(legend.position = c(0.15,0.10),
+  theme(legend.position = c(0.13,0.10),
         legend.title = element_blank(),
         legend.background = element_rect(fill = 'white', colour = 'gray40'),
         #axis.line = element_line(colour = 'gray20'),
@@ -455,7 +455,8 @@ g.futprojection <- ggplot(GHGbdg, aes(x = year, y = dSOC, colour = scenarios)) +
         plot.tag = element_text(face = "bold"))
 
 pts_sf_GHGsen$TimeHorizonLbl <- paste('Spatial distribution for time horizon:', pts_sf_GHGsen$TimeHorizon)
-pts_sf_GHGsen$snow <- factor(pts_sf_GHGsen$snow, levels = c(TRUE, FALSE), labels = c('With snow', 'Snow free'))
+pts_sf_GHGsen$snow_lbl <- factor(pts_sf_GHGsen$snow, levels = c(TRUE, FALSE), labels = c('With snow', 'Snow free'))
+
 g.map.AlbRelImp <- ggplot(pts_sf_GHGsen %>% filter(TimeHorizon == year_flag)) + 
   geom_sf(data = europe_laea, fill = landColor) +
   geom_sf(aes(colour = GHGr), size = pointSize) +
@@ -467,7 +468,7 @@ g.map.AlbRelImp <- ggplot(pts_sf_GHGsen %>% filter(TimeHorizon == year_flag)) +
                          limits = c(0, 1),
                          option = 'plasma', 
                          oob = squish) +
-  facet_grid(ccType ~ snow) +
+  facet_grid(ccType ~ snow_lbl) +
   coord_sf(xlim = xLims, ylim = yLims) +
   # labs(tag = 'b') +
   theme(legend.position = 'right',
@@ -509,14 +510,14 @@ effects.lbls <- c('BGC' = bquote('Biogeochemical (CO'[2]*'+ N'[2]*'O)'),
                   'BPH' = 'Biogeophysical (albedo)')
 
 dat.perCountry$yr_lbl <- paste('Time horizon:', dat.perCountry$yr)
-dat.perCountry$snow <- factor(dat.perCountry$snow, levels = c(TRUE, FALSE), 
+dat.perCountry$snow_lbl <- factor(dat.perCountry$snow, levels = c(TRUE, FALSE), 
                               labels = c('With snow', 'Snow free'))
 
 tot.perCountry <- dat.perCountry %>% 
   filter(yr %in% c('2050')) %>% 
-  group_by(ccType, snow) %>% 
+  group_by(ccType, snow_lbl) %>% 
   summarise(TotalMit = round(sum(CO2.eq), digits = 0)) %>%
-  mutate(x = 12.5, y = -550)
+  mutate(x = 12.5, y = -450)
 
 
 
@@ -526,12 +527,12 @@ g.country <- ggplot(dat.perCountry %>%
           stat = 'identity', position = 'stack') +
   geom_hline(yintercept = 0, linetype = "solid", colour = 'grey10') +
   coord_polar(theta = "x", direction = -1) +
-  geom_label(data = tot.perCountry, size = 3.5,
+  geom_label(data = tot.perCountry, size = 3, 
              aes(x = x, y = y, 
                  label = paste('Total mitigation potential:\n', TotalMit, 'Tg CO2e'))) +
                  #label = bquote("Total mitigation potential:\n" ~.(TotalMit) ~ "Tg COe"))) +
-  facet_grid(ccType ~ snow) +
-  scale_y_continuous(limits = c(-700, 0)) +
+  facet_grid(ccType ~ snow_lbl) +
+  scale_y_continuous(limits = c(-450, 50)) +
   scale_x_discrete('') + 
   scale_fill_manual('Type of effect:', 
                       values = effects.cols, 
@@ -556,194 +557,4 @@ grid.text(expression(bold("c")), x = unit(0.14, "npc"), y = unit(0.44, "npc"), g
 grid.text(expression(bold("d")), x = unit(0.55, "npc"), y = unit(0.44, "npc"), gp=gpar(fontsize=18))
 
 dev.off()
-
-
-#### FIG S6 #### ----
-
-
-
-anot.AlbedoChg <- bquote(mu(sigma) == .(round(mean(pts_sf_aLCS_2$a_dif, na.rm=TRUE),4)) 
-                         %+-% .(round(sd(pts_sf_aLCS_2$a_dif, na.rm=TRUE),4)))
-
-g.map.AlbedoChg <- ggplot(pts_sf_aLCS_2) + 
-  geom_sf(data = europe_laea, fill = landColor)+
-  geom_sf(aes(colour = a_dif), size = pointSize)+
-  scale_colour_gradientn("Albedo change",
-                         limits = c(-0.01,0.01), 
-                         colors = brewer.pal(9,'PiYG'), 
-                         oob = squish)+
-  coord_sf(xlim = xLims, ylim = yLims) +
-  # labs(tag = 'a', caption = anot.AlbedoChg) + 
-  labs(caption = anot.AlbedoChg) + 
-  custom_theme_maps +  
-  guides(colour = guide_colourbar(title.position = 'top', title.hjust = 0.5))
-
-
-
-
-
-
-anot.AlbRadFor <- bquote(mu(sigma) == .(round(mean(pts_sf_aLCS_2$RFa_Wm2,
-                                                   na.rm = TRUE),4)) 
-                         %+-% .(round(sd(pts_sf_aLCS_2$RFa_Wm2, na.rm = TRUE), 4)))
-
-g.map.AlbRadFor <- ggplot(pts_sf_aLCS_2) + 
-  geom_sf(data = europe_laea, fill = landColor)+
-  geom_sf(aes(colour = RFa_Wm2), size = pointSize)+
-  scale_colour_gradientn("Albedo radiative forcing",
-                         limits = c(-0.5,0.5), 
-                         colors = brewer.pal(9,'RdBu'), 
-                         oob = squish)+
-  coord_sf(xlim = xLims, ylim = yLims) +
-  # labs(tag = 'b', caption = anot.AlbRadFor) + 
-  labs(caption = anot.AlbRadFor) + 
-  custom_theme_maps +  
-  guides(colour = guide_colourbar(title.position = 'top', title.hjust = 0.5))
-
-
-
-dat.perCountry_2$yr_lbl <- paste('Time horizon:', dat.perCountry_2$yr)
-
-tot.perCountry <- dat.perCountry_2 %>% 
-  filter(yr %in% c('2030', '2100')) %>% 
-  group_by(ccType, yr_lbl) %>% 
-  summarise(TotalMit = round(sum(CO2.eq), digits = 0))
-
-g.country <- ggplot(dat.perCountry_2 %>% 
-                      filter(yr %in% c('2030', '2100'))) +
-  geom_bar(aes(x = reorder(Country, Area_Mha), y = CO2.eq, fill = Type), 
-           stat = 'identity', position = 'stack') + 
-  geom_hline(yintercept = 0, linetype = "solid", colour = 'grey10') +
-  coord_polar(theta = "x", direction = -1) +
-  geom_label(data = tot.perCountry, size = 3.5,
-             aes(x = 12.5, y = -450,
-                 label = paste('Total mitigation potential:\n', TotalMit, 'Tg CO2e'))) +
-  facet_grid(ccType ~ yr_lbl) +
-  scale_y_continuous(limits = c(-700, 100)) +
-  scale_x_discrete('') + 
-  scale_fill_manual('Type of effect:', 
-                    values = effects.cols, 
-                    labels = effects.lbls) +
-  theme(legend.position = 'top',
-        plot.tag = element_text(face = "bold"),
-        strip.text = element_text(face = 'bold', size = '12')) +
-  # labs(tag = 'c', caption = 'Note: there are insufficient data points for LU, MT, CY and HR.') +
-  labs(caption = 'Note: there are insufficient data points for LU, MT, CY and HR.') +
-  ylab(expression("Mitigation potential (Tg CO"[2]*"e ha"^-1*")")) 
-  
-
-
-fname <- 'FigureS6_NormalCCwithSNOW'
-figW <- 10; figH <- 12; fmt <- 'png'
-fullfname <- paste0(fpath, fname, '.', fmt)
-if(fmt=='png'){png(fullfname, width = figW, height = figH, units = "in", res= 150)}
-if(fmt=='pdf'){pdf(fullfname, width = figW, height = figH)}
-
-h.t <- 0.48
-print(g.map.AlbedoChg, vp = viewport(width = 0.5, height = h.t, x = 0.0, y = 1 - h.t, just=c(0,0)))
-print(g.map.AlbRadFor, vp = viewport(width = 0.5, height = h.t, x = 0.5, y = 1 - h.t, just=c(0,0)))
-print(g.country, vp = viewport(width = 1, height = 1 - h.t, x = 0.0, y = 0.0, just=c(0,0)))
-
-grid.text(expression(bold("a")), x = unit(0.07, "npc"), y = unit(0.95, "npc"), gp=gpar(fontsize=18))
-grid.text(expression(bold("b")), x = unit(0.57, "npc"), y = unit(0.95, "npc"), gp=gpar(fontsize=18))
-grid.text(expression(bold("c")), x = unit(0.10, "npc"), y = unit(0.41, "npc"), gp=gpar(fontsize=18))
-grid.text(expression(bold("d")), x = unit(0.55, "npc"), y = unit(0.41, "npc"), gp=gpar(fontsize=18))
-          
-dev.off()
-
-
-
-#### FIG S7 #### ----
-
-
-
-anot.AlbedoChg <- bquote(mu(sigma) == .(round(mean(pts_sf_aLCS_4$a_dif, na.rm=TRUE),4)) 
-                         %+-% .(round(sd(pts_sf_aLCS_4$a_dif, na.rm=TRUE),4)))
-
-g.map.AlbedoChg <- ggplot(pts_sf_aLCS_4) + 
-  geom_sf(data = europe_laea, fill = landColor)+
-  geom_sf(aes(colour = a_dif), size = pointSize)+
-  scale_colour_gradientn("Albedo change",
-                         limits = c(-0.01,0.01), 
-                         colors = brewer.pal(9,'PiYG'), 
-                         oob = squish)+
-  coord_sf(xlim = xLims, ylim = yLims) +
-  # labs(tag = 'a', caption = anot.AlbedoChg) + 
-  labs(caption = anot.AlbedoChg) + 
-  custom_theme_maps +  
-  guides(colour = guide_colourbar(title.position = 'top', title.hjust = 0.5))
-
-
-anot.AlbRadFor <- bquote(mu(sigma) == .(round(mean(pts_sf_aLCS_4$RFa_Wm2,
-                                                   na.rm = TRUE),4)) 
-                         %+-% .(round(sd(pts_sf_aLCS_4$RFa_Wm2, na.rm = TRUE), 4)))
-
-g.map.AlbRadFor <- ggplot(pts_sf_aLCS_4) + 
-  geom_sf(data = europe_laea, fill = landColor)+
-  geom_sf(aes(colour = RFa_Wm2), size = pointSize)+
-  scale_colour_gradientn("Albedo radiative forcing",
-                         limits = c(-0.5,0.5), 
-                         colors = brewer.pal(9,'RdBu'), 
-                         oob = squish)+
-  coord_sf(xlim = xLims, ylim = yLims) +
-  # labs(tag = 'b', caption = anot.AlbRadFor) + 
-  labs(caption = anot.AlbRadFor) + 
-  custom_theme_maps +  
-  guides(colour = guide_colourbar(title.position = 'top', title.hjust = 0.5))
-
-
-
-
-
-dat.perCountry_4$yr_lbl <- paste('Time horizon:', dat.perCountry_4$yr)
-
-tot.perCountry <- dat.perCountry_4 %>% 
-  filter(yr %in% c('2030', '2100')) %>%
-  group_by(ccType, yr_lbl) %>% 
-  summarise(TotalMit = round(sum(CO2.eq), digits = 0))
-
-g.country <- ggplot(dat.perCountry_4 %>%
-                      filter(yr %in% c('2030', '2100'))) +
-  geom_bar(aes(x = reorder(Country, Area_Mha), y = CO2.eq, fill = Type), 
-           stat = 'identity', position = 'stack') + 
-  geom_hline(yintercept = 0, linetype = "solid", colour = 'grey10') +
-  coord_polar(theta = "x", direction = -1) +
-  geom_label(data = tot.perCountry, size = 3.5,
-             aes(x = 12.5, y = -450,
-                 label = paste('Total mitigation potential:\n', TotalMit, 'Tg CO2e'))) +
-  facet_grid(ccType ~ yr_lbl) +
-  scale_y_continuous(limits = c(-700, 100)) +
-  scale_x_discrete('') + 
-  scale_fill_manual('Type of effect:', 
-                    values = effects.cols, 
-                    labels = effects.lbls) +
-  theme(legend.position = 'top',
-        plot.tag = element_text(face = "bold"),
-        strip.text = element_text(face = 'bold', size = '12')) +
-  # labs(tag = 'c', caption = 'Note: there are insufficient data points for LU, MT, CY and HR.')
-  labs(caption = 'Note: there are insufficient data points for LU, MT, CY and HR.')+ 
-  ylab(expression("Mitigation potential (Tg CO"[2]*"e ha"^-1*")")) 
-
-
-fname <- 'FigureS7_MutantCCwithSNOW'
-figW <- 10; figH <- 12; fmt <- 'png'
-fullfname <- paste0(fpath, fname, '.', fmt)
-if(fmt=='png'){png(fullfname, width = figW, height = figH, units = "in", res= 150)}
-if(fmt=='pdf'){pdf(fullfname, width = figW, height = figH)}
-
-h.t <- 0.48
-print(g.map.AlbedoChg, vp = viewport(width = 0.5, height = h.t, x = 0.0, y = 1 - h.t, just=c(0,0)))
-print(g.map.AlbRadFor, vp = viewport(width = 0.5, height = h.t, x = 0.5, y = 1 - h.t, just=c(0,0)))
-print(g.country, vp = viewport(width = 1, height = 1 - h.t, x = 0.0, y = 0.0, just=c(0,0)))
-
-grid.text(expression(bold("a")), x = unit(0.07, "npc"), y = unit(0.95, "npc"), gp=gpar(fontsize=18))
-grid.text(expression(bold("b")), x = unit(0.57, "npc"), y = unit(0.95, "npc"), gp=gpar(fontsize=18))
-grid.text(expression(bold("c")), x = unit(0.10, "npc"), y = unit(0.41, "npc"), gp=gpar(fontsize=18))
-grid.text(expression(bold("d")), x = unit(0.55, "npc"), y = unit(0.41, "npc"), gp=gpar(fontsize=18))
-
-dev.off()
-
-
-
-
 
