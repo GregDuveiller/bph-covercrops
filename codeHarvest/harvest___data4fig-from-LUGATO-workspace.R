@@ -7,7 +7,7 @@ getLugatoVars <- function(LugWorkSpace){
   
   load(LugWorkSpace)
 
-### (Horrible) code from Lugato to get the necessary vars...
+### code from Lugato to get the necessary vars...
 ################################################################################
 
 base <- base[order(base$sample_ID),]				####remove 2 duplicated sample_ID
@@ -53,9 +53,37 @@ for (j in 3:87){
   alfa_dif[,j-1] <- alfa_dif[,j-2] + aLCS[,j+12]*-1
 }
 
-alfa <- apply(alfa_dif, 2, median, na.rm=T)                                
-alfa_1q <- apply(alfa_dif, 2, quantile, probs=c(0.25), na.rm=T)
-alfa_2q <- apply(alfa_dif, 2, quantile, probs=c(0.75), na.rm=T)
+
+###################################################################################################################
+####correction for RF with IRF														#	
+###################################################################################################################
+RFa_wm2_y<-(aLCS[,15:99]*(0.908*0.48)*10)*(10000/5.1E+14)  	#W/m2 *A/Earth - riconversion old values to W/m2	#
+RFa_wm2_y<-t(apply(RFa_wm2_y, 1, cumsum))			#cumulative wm2 *A/Earth					#
+#
+#
+IRS<-matrix(NA, nrow = nrow(aLCS), ncol = 85)												#
+for (i in 0:84){																	#
+  IRS[,i+1]<-0.217+0.259*exp(-i/172.9)+0.338*exp(-i/18.51)+0.186*exp(-i*1.186)							#
+}																			#
+#
+IRS<-t(apply(IRS, 1, cumsum))															#
+#
+RF_IRS<- RFa_wm2_y/(1.76E-15*IRS)/1000				#cumulative RF Mg/Ha/y						#
+#
+###################################################################################################################
+alfa_dif[,2:86]<- -1*RF_IRS															#		
+###################################################################################################################
+
+alfa<-apply(alfa_dif, 2, median, na.rm=T)                                
+alfa_1q<-apply(alfa_dif, 2, quantile, probs=c(0.25), na.rm=T)
+alfa_2q<-apply(alfa_dif, 2, quantile, probs=c(0.75), na.rm=T)
+
+
+
+
+
+
+
 
 ################################################################################
 
@@ -72,22 +100,26 @@ GHGbdg <- data.frame(scenarios, year , data)
 ################################################################################
 
 GHGt30 <- abs(SOC_dif[,16]+ N2O_dif[,16])
-GHGr30 <- ifelse(abs(alfa_dif[,16])/GHGt30>1, 1, abs(alfa_dif[,16])/GHGt30)
+# GHGr30 <- ifelse(abs(alfa_dif[,16])/GHGt30>1, 1, abs(alfa_dif[,16])/GHGt30)
+GHGr30 <- abs(alfa_dif[,16])/GHGt30
 N2O_30 <- N2O_dif[,16]
 CO2_30 <- SOC_dif[,16]
 
 GHGt50 <- abs(SOC_dif[,36]+ N2O_dif[,36])
-GHGr50 <- ifelse(abs(alfa_dif[,36])/GHGt50>1, 1, abs(alfa_dif[,36])/GHGt50)
+# GHGr50 <- ifelse(abs(alfa_dif[,36])/GHGt50>1, 1, abs(alfa_dif[,36])/GHGt50)
+GHGr50 <- abs(alfa_dif[,36])/GHGt50
 N2O_50 <- N2O_dif[,36]
 CO2_50 <- SOC_dif[,36]
 
 GHGt70 <- abs(SOC_dif[,56]+ N2O_dif[,56])
-GHGr70 <- ifelse(abs(alfa_dif[,56])/GHGt70>1, 1, abs(alfa_dif[,56])/GHGt70)
+# GHGr70 <- ifelse(abs(alfa_dif[,56])/GHGt70>1, 1, abs(alfa_dif[,56])/GHGt70)
+GHGr70 <- abs(alfa_dif[,56])/GHGt70
 N2O_70 <- N2O_dif[,56]
 CO2_70 <- SOC_dif[,56]
 
 GHGt00 <- abs(SOC_dif[,86]+ N2O_dif[,86])
-GHGr00 <- ifelse(abs(alfa_dif[,86])/GHGt00>1, 1, abs(alfa_dif[,86])/GHGt00)
+# GHGr00 <- ifelse(abs(alfa_dif[,86])/GHGt00>1, 1, abs(alfa_dif[,86])/GHGt00)
+GHGr00 <- abs(alfa_dif[,86])/GHGt00
 N2O_00 <- N2O_dif[,86]
 CO2_00 <- SOC_dif[,86]
 
@@ -128,7 +160,7 @@ dat <- getLugatoVars('dataFigures/NCC_WP1.RData')
 save(dat, file = 'dataFigures/data4scen1_normalCC-noSNOW.Rda') 
 
 dat <- getLugatoVars('dataFigures/NCC_WP3.RData')
-save(dat, file = 'dataFigures/data4scen3_brightCC-noSNOW.Rda') 
+save(dat, file = 'dataFigures/data4scen3_mutantCC-noSNOW.Rda') 
 
 dat <- getLugatoVars('dataFigures/NCC_WP2.RData')
 save(dat, file = 'dataFigures/data4scen2_normalCC-withSNOW.Rda') 

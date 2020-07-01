@@ -1,3 +1,21 @@
+#### Script to generate the figures for the paper:
+# 
+#  Lugato E., Cescatti A., Arwyn J., Ceccherini G. and Duveiller G. (2020)
+#  "Maximising climate mitigation potential by carbon and radiative agricultural 
+#  land management with cover crops" Environmental Research Letters. 
+#  https://doi.org/10.1088/1748-9326/aba137
+#
+#  Input data required:
+#  - data4scen1_normalCC-noSNOW.Rda
+#  - data4scen2_normalCC-withSNOW.Rda
+#  - data4scen3_mutantCC-noSNOW.Rda
+#  - data4scen4_mutantCC-withSNOW.Rda
+#
+# ______________________________________________________________________________
+
+
+
+# load packages
 library(ggplot2)
 library(dplyr)
 library(tidyr)
@@ -7,12 +25,11 @@ library(scales)
 library(RColorBrewer)
 library(here)
 
-################################################################################
 #### data preparation #### ----
 
-
-
 fpath <- 'textFigures/'
+fmt <- 'pdf' # fmt <- 'png'
+
 
 # some general setups...
 ccTypes <- c('Normal', 'Mutant')
@@ -104,7 +121,7 @@ dat.perCountry_1 <- bind_rows(
 
 
 ### load third dataset, with mutant plants ----
-load(file = 'dataFigures/data4scen3_brightCC-noSNOW.Rda') 
+load(file = 'dataFigures/data4scen3_mutantCC-noSNOW.Rda') 
 # (loads a list named 'dat' with several objects 'GHGbdg','GHGsen', 'aLCS', etc)
 
 # make sf points for the maps showing projected scenario with mutant plants
@@ -216,8 +233,6 @@ dat.perCountry <- bind_rows(dat.perCountry_1, dat.perCountry_3,
 
 
 
-
-################################################################################
 #### Figures #### ----
 
   
@@ -232,27 +247,7 @@ custom_theme_maps <- theme(legend.position = 'top',
                            plot.tag = element_text(face = "bold"))
   
 #### FIG 1 #### ----
-  
-  
-  # anot.TransSWin <- bquote(mu(sigma) == .(round(mean(pts_sf_aLCS_1$SWin_Ta_Wm2, na.rm=TRUE),4))
-  #                          %+-% .(round(sd(pts_sf_aLCS_1$SWin_Ta_Wm2, na.rm=TRUE),4)))
-  # 
-  # g.map.TransSWin <- ggplot(pts_sf_aLCS_1) + 
-  #   geom_sf(data = europe_laea, fill = landColor) +
-  #   geom_sf(aes(colour = SWin_Ta_Wm2), size = pointSize) +
-  #   scale_colour_viridis_c("Ta * SWin",
-  #                          limits = c(40,120), 
-  #                          option = "magma",
-  #                          oob = squish)+
-  #   coord_sf(xlim = xLims, ylim = yLims) +
-  #   # labs(tag = 'a', caption = anot.TransSWin) + 
-  #   labs(caption = anot.TransSWin) + 
-  #   custom_theme_maps +  
-  #   #geom_text(data = data.frame(x = 2.9e6, y = 4.4e6, label = anot)) +
-  #   #annotate(geom = "text", x = 2.9e6, y = 4.4e6, label = anot) +
-  #   #annotate(geom = "label", x = 2.9e6, y = 4.4e6, label = anot) +
-  #   guides(colour = guide_colourbar(title.position = 'top', title.hjust = 0.5))
-  
+
   
   # SNOW FREE
   
@@ -366,7 +361,7 @@ custom_theme_maps <- theme(legend.position = 'top',
   
   
   fname <- 'Figure1_Bph-effect'
-  figW <- 10; figH <- 16; fmt <- 'png'
+  figW <- 10; figH <- 16
   fullfname <- paste0(fpath, fname, '.', fmt)
   if(fmt=='png'){png(fullfname, width = figW, height = figH, units = "in", res= 150)}
   if(fmt=='pdf'){pdf(fullfname, width = figW, height = figH)}
@@ -422,7 +417,7 @@ scen.line <- c('CO2_soil' = 1,
                'albedo_snowTRUE' = 1,
                'albedo_snowFALSE' = 2)
 
-lab <- expression(Delta* "Soil fluxes (Mg CO"[2]*"e ha"^-1*")")   ##labels
+lab <- expression("Cumulative emissions (Mg CO"[2]*"e ha"^-1*")")   ##labels
 
 # add dummy title on top for projections
 GHGbdg$Simulation <- 'Projected temporal trends'
@@ -439,9 +434,9 @@ g.futprojection <- ggplot(GHGbdg, aes(x = year, y = dSOC, colour = scenarios)) +
   scale_color_manual('', values = scen.cols, labels = scen.lbls) +
   geom_hline(yintercept = 0, linetype = "solid", colour = 'grey10') +
   geom_vline(xintercept = year_flag, linetype = "dashed", colour = 'grey50') +
-  coord_cartesian(ylim = c(-23, 10)) +
+  coord_cartesian(ylim = c(-25, 10)) +
   # labs(tag = 'a') +
-  theme(legend.position = c(0.13,0.10),
+  theme(legend.position = c(0.4,0.5),
         legend.title = element_blank(),
         legend.background = element_rect(fill = 'white', colour = 'gray40'),
         #axis.line = element_line(colour = 'gray20'),
@@ -465,7 +460,7 @@ g.map.AlbRelImp <- ggplot(pts_sf_GHGsen %>% filter(TimeHorizon == year_flag)) +
   #                y = st_coordinates(geometry)[,2]),
   #            size = pointSize) +
   scale_colour_viridis_c("Ratio of\n albedo\n forcing",
-                         limits = c(0, 1),
+                         limits = c(0, 2),
                          option = 'plasma', 
                          oob = squish) +
   facet_grid(ccType ~ snow_lbl) +
@@ -481,7 +476,7 @@ g.map.AlbRelImp <- ggplot(pts_sf_GHGsen %>% filter(TimeHorizon == year_flag)) +
 
 
 fname <- 'Figure2_Projections'
-figW <- 15; figH <- 8; fmt <- 'png'
+figW <- 15; figH <- 8
 fullfname <- paste0(fpath, fname, '.', fmt)
 if(fmt=='png'){png(fullfname, width = figW, height = figH, units = "in", res= 150)}
 if(fmt=='pdf'){pdf(fullfname, width = figW, height = figH)}
@@ -517,9 +512,9 @@ tot.perCountry <- dat.perCountry %>%
   filter(yr %in% c('2050')) %>% 
   group_by(ccType, snow_lbl) %>% 
   summarise(TotalMit = round(sum(CO2.eq), digits = 0)) %>%
-  mutate(x = 12.5, y = -450)
+  mutate(x = 12.5, y = -350)
 
-
+bar.lims <- c(-700, 80)
 
 g.country <- ggplot(dat.perCountry %>% 
                       filter(yr %in% c('2050'))) +
@@ -529,21 +524,22 @@ g.country <- ggplot(dat.perCountry %>%
   coord_polar(theta = "x", direction = -1) +
   geom_label(data = tot.perCountry, size = 3, 
              aes(x = x, y = y, 
-                 label = paste('Total mitigation potential:\n', TotalMit, 'Tg CO2e'))) +
+                 label = paste('Combined:\n', TotalMit, 'Tg CO2e'))) +
                  #label = bquote("Total mitigation potential:\n" ~.(TotalMit) ~ "Tg COe"))) +
   facet_grid(ccType ~ snow_lbl) +
-  scale_y_continuous(limits = c(-450, 50)) +
+  scale_y_continuous(limits = bar.lims) +
   scale_x_discrete('') + 
   scale_fill_manual('Type of effect:', 
                       values = effects.cols, 
                       labels = effects.lbls) +
   theme(legend.position = 'top',
         strip.text = element_text(face = 'bold', size = '12')) +
-  ylab(expression("Mitigation potential (Tg CO"[2]*"e ha"^-1*")")) +
-  labs(caption = 'Note: there are insufficient data points for LU, MT, CY and HR.')
+  ylab(expression("Cumulative emissions (Tg CO"[2]*"e ha"^-1*")")) +
+  labs(title = 'Cumulative emissions by country for year 2050',
+       caption = 'Note: there are insufficient data points for LU, MT, CY and HR.')
 
 fname <- 'Figure3_perCountry'
-figW <- 8; figH <- 8; fmt <- 'png'
+figW <- 8; figH <- 8
 fullfname <- paste0(fpath, fname, '.', fmt)
 
 if(fmt=='png'){png(fullfname, width = figW, height = figH, units = "in", res= 150)}
@@ -557,4 +553,146 @@ grid.text(expression(bold("c")), x = unit(0.14, "npc"), y = unit(0.44, "npc"), g
 grid.text(expression(bold("d")), x = unit(0.55, "npc"), y = unit(0.44, "npc"), gp=gpar(fontsize=18))
 
 dev.off()
+
+
+
+
+#### FIG S5 #### ----
+
+anot.TransSWin <- bquote(mu(sigma) == .(round(mean(pts_sf_aLCS_1$SWin_Ta_Wm2, na.rm=TRUE),4))
+                         %+-% .(round(sd(pts_sf_aLCS_1$SWin_Ta_Wm2, na.rm=TRUE),4)))
+
+g.map.TransSWin <- ggplot(pts_sf_aLCS_1) +
+  geom_sf(data = europe_laea, fill = landColor) +
+  geom_sf(aes(colour = SWin_Ta_Wm2), size = pointSize) +
+  scale_colour_viridis_c("Ta * SWin",
+                         limits = c(40,120),
+                         option = "magma",
+                         oob = squish)+
+  coord_sf(xlim = xLims, ylim = yLims) +
+  # labs(tag = 'a', caption = anot.TransSWin) +
+  labs(caption = anot.TransSWin) +
+  custom_theme_maps +
+  #geom_text(data = data.frame(x = 2.9e6, y = 4.4e6, label = anot)) +
+  #annotate(geom = "text", x = 2.9e6, y = 4.4e6, label = anot) +
+  #annotate(geom = "label", x = 2.9e6, y = 4.4e6, label = anot) +
+  guides(colour = guide_colourbar(title.position = 'top', title.hjust = 0.5))
+
+fname <- 'FigureS5_transmition'
+figW <- 6; figH <- 6
+fullfname <- paste0(fpath, fname, '.', fmt)
+
+ggsave(filename = fullfname, plot = g.map.TransSWin, width = figW, height = figH)
+
+#### FIG S6 #### ----
+
+effects.cols <- c('BGC' = 'coral', 
+                  'BPH' = 'cornflowerblue')
+effects.lbls <- c('BGC' = bquote('Biogeochemical (CO'[2]*'+ N'[2]*'O)'), 
+                  'BPH' = 'Biogeophysical (albedo)')
+
+dat.perCountry$yr_lbl <- paste('Time horizon:', dat.perCountry$yr)
+dat.perCountry$snow_lbl <- factor(dat.perCountry$snow, levels = c(TRUE, FALSE), 
+                                  labels = c('With snow', 'Snow free'))
+
+tot.perCountry <- dat.perCountry %>% 
+  filter(yr %in% c('2030', '2100')) %>% 
+  filter(ccType == 'Normal cover crop') %>%
+  group_by(yr, snow_lbl) %>% 
+  summarise(TotalMit = round(sum(CO2.eq), digits = 0)) %>%
+  mutate(x = 12.5, y = -300)
+
+
+
+g.country <- ggplot(dat.perCountry %>% 
+                      filter(ccType %in% c('Normal cover crop'),
+                             yr %in% c('2030', '2100'))) +
+  geom_bar(aes(x = reorder(Country, Area_Mha), y = CO2.eq, fill = Type),
+           stat = 'identity', position = 'stack') +
+  geom_hline(yintercept = 0, linetype = "solid", colour = 'grey10') +
+  coord_polar(theta = "x", direction = -1) +
+  geom_label(data = tot.perCountry, size = 3, 
+             aes(x = x, y = y, 
+                 label = paste('Combined:\n', TotalMit, 'Tg CO2e'))) +
+  #label = bquote("Total mitigation potential:\n" ~.(TotalMit) ~ "Tg COe"))) +
+  facet_grid(yr ~ snow_lbl) +
+  scale_y_continuous(limits = bar.lims) +
+  scale_x_discrete('') + 
+  scale_fill_manual('Type of effect:', 
+                    values = effects.cols, 
+                    labels = effects.lbls) +
+  theme(legend.position = 'top',
+        strip.text = element_text(face = 'bold', size = '12')) +
+  ylab(expression("Cumulative emissions (Tg CO"[2]*"e ha"^-1*")")) +
+  labs(title = 'Cumulative emissions by country for a normal cover crop',
+       caption = 'Note: there are insufficient data points for LU, MT, CY and HR.')
+
+fname <- 'FigureS6_perCountry_normal'
+figW <- 8; figH <- 8
+fullfname <- paste0(fpath, fname, '.', fmt)
+
+if(fmt=='png'){png(fullfname, width = figW, height = figH, units = "in", res= 150)}
+if(fmt=='pdf'){pdf(fullfname, width = figW, height = figH)}
+
+print(g.country, vp = viewport(width = 1, height = 1, x = 0.00, y = 0, just=c(0,0)))
+
+grid.text(expression(bold("a")), x = unit(0.14, "npc"), y = unit(0.85, "npc"), gp=gpar(fontsize=18))
+grid.text(expression(bold("b")), x = unit(0.55, "npc"), y = unit(0.85, "npc"), gp=gpar(fontsize=18))
+grid.text(expression(bold("c")), x = unit(0.14, "npc"), y = unit(0.44, "npc"), gp=gpar(fontsize=18))
+grid.text(expression(bold("d")), x = unit(0.55, "npc"), y = unit(0.44, "npc"), gp=gpar(fontsize=18))
+
+dev.off()
+
+
+
+#### FIG S7 #### ----
+
+tot.perCountry <- dat.perCountry %>% 
+  filter(yr %in% c('2030', '2100')) %>% 
+  filter(ccType == 'Chlorophyll-deficient mutant') %>%
+  group_by(yr, snow_lbl) %>% 
+  summarise(TotalMit = round(sum(CO2.eq), digits = 0)) %>%
+  mutate(x = 12.5, y = -300)
+
+#bar.lims <- c(-700, 80)
+
+g.country <- ggplot(dat.perCountry %>% 
+                      filter(ccType %in% c('Chlorophyll-deficient mutant'),
+                             yr %in% c('2030', '2100'))) +
+  geom_bar(aes(x = reorder(Country, Area_Mha), y = CO2.eq, fill = Type),
+           stat = 'identity', position = 'stack') +
+  geom_hline(yintercept = 0, linetype = "solid", colour = 'grey10') +
+  coord_polar(theta = "x", direction = -1) +
+  geom_label(data = tot.perCountry, size = 3, 
+             aes(x = x, y = y, 
+                 label = paste('Combined:\n', TotalMit, 'Tg CO2e'))) +
+  #label = bquote("Total mitigation potential:\n" ~.(TotalMit) ~ "Tg COe"))) +
+  facet_grid(yr ~ snow_lbl) +
+  scale_y_continuous(limits = bar.lims) +
+  scale_x_discrete('') + 
+  scale_fill_manual('Type of effect:', 
+                    values = effects.cols, 
+                    labels = effects.lbls) +
+  theme(legend.position = 'top',
+        strip.text = element_text(face = 'bold', size = '12')) +
+  ylab(expression("Cumulative emissions (Tg CO"[2]*"e ha"^-1*")")) +
+  labs(title = 'Cumulative emissions by country for a chlorophyll-deficient cover crop',
+       caption = 'Note: there are insufficient data points for LU, MT, CY and HR.')
+
+fname <- 'FigureS7_perCountry_mutant'
+figW <- 8; figH <- 8
+fullfname <- paste0(fpath, fname, '.', fmt)
+
+if(fmt=='png'){png(fullfname, width = figW, height = figH, units = "in", res= 150)}
+if(fmt=='pdf'){pdf(fullfname, width = figW, height = figH)}
+
+print(g.country, vp = viewport(width = 1, height = 1, x = 0.00, y = 0, just=c(0,0)))
+
+grid.text(expression(bold("a")), x = unit(0.14, "npc"), y = unit(0.85, "npc"), gp=gpar(fontsize=18))
+grid.text(expression(bold("b")), x = unit(0.55, "npc"), y = unit(0.85, "npc"), gp=gpar(fontsize=18))
+grid.text(expression(bold("c")), x = unit(0.14, "npc"), y = unit(0.44, "npc"), gp=gpar(fontsize=18))
+grid.text(expression(bold("d")), x = unit(0.55, "npc"), y = unit(0.44, "npc"), gp=gpar(fontsize=18))
+
+dev.off()
+
 
